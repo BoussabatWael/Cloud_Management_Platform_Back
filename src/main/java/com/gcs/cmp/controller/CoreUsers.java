@@ -330,11 +330,10 @@ public class CoreUsers {
 						}
 						
 						}else if(user.get().getPhoto() == null && user.get().getTimezone() == null) {
-							System.out.println("aaaaaaaaaa");
 							if(user.get().getAccount() == core_Users.getAccount() && user.get().getBrowser().equals(core_Users.getBrowser()) && user.get().getFirstname().equals(core_Users.getFirstname()) &&  user.get().getHas_token() == core_Users.getHas_token() &&
 									user.get().getIp_address().equals(core_Users.getIp_address()) && user.get().getLanguage() == core_Users.getLanguage() && user.get().getLast_auth().toString().equals(core_Users.getLast_auth().format(formatter)) && 
 									user.get().getLastname().equals(core_Users.getLastname()) && user.get().getPhoto() == core_Users.getPhoto() && user.get().getRole() == core_Users.getRole() && user.get().getStatus() == core_Users.getStatus() && 
-									user.get().getTimezone() == core_Users.getTimezone() ) {
+									user.get().getTimezone() == core_Users.getTimezone() && user.get().getEmail().equals(core_Users.getEmail()) ) {
 				        	return ResponseHandler.ResponseOk("Nothing was changed!", HttpStatus.OK, null);
 						}
 						
@@ -342,7 +341,7 @@ public class CoreUsers {
 							if(user.get().getAccount() == core_Users.getAccount() && user.get().getBrowser().equals(core_Users.getBrowser()) && user.get().getFirstname().equals(core_Users.getFirstname()) &&  user.get().getHas_token() == core_Users.getHas_token() &&
 									user.get().getIp_address().equals(core_Users.getIp_address()) && user.get().getLanguage() == core_Users.getLanguage() && user.get().getLast_auth().toString().equals(core_Users.getLast_auth().format(formatter)) && 
 									user.get().getLastname().equals(core_Users.getLastname()) && user.get().getPhoto().equals(core_Users.getPhoto()) && user.get().getRole() == core_Users.getRole() && user.get().getStatus() == core_Users.getStatus() && 
-									user.get().getTimezone().equals(core_Users.getTimezone())) {
+									user.get().getTimezone().equals(core_Users.getTimezone()) && user.get().getEmail().equals(core_Users.getEmail())) {
 				        	return ResponseHandler.ResponseOk("Nothing was changed!", HttpStatus.OK, null);
 							}
 						}
@@ -359,7 +358,7 @@ public class CoreUsers {
 							if(user.get().getAccount() == core_Users.getAccount() && user.get().getBrowser().equals(core_Users.getBrowser()) && user.get().getFirstname().equals(core_Users.getFirstname()) &&  user.get().getHas_token() == core_Users.getHas_token() &&
 									user.get().getIp_address().equals(core_Users.getIp_address()) && user.get().getLanguage().equals(core_Users.getLanguage()) && user.get().getLast_auth().toString().equals(core_Users.getLast_auth().format(formatter)) && 
 									user.get().getLastname().equals(core_Users.getLastname()) && user.get().getPhoto().equals(core_Users.getPhoto()) && user.get().getRole() == core_Users.getRole() && user.get().getStatus() == core_Users.getStatus() && 
-									user.get().getTimezone() == core_Users.getTimezone() ) {
+									user.get().getTimezone() == core_Users.getTimezone() && user.get().getEmail().equals(core_Users.getEmail()) ) {
 				        	return ResponseHandler.ResponseOk("Nothing was changed!", HttpStatus.OK, null);
 						}
 						
@@ -368,7 +367,7 @@ public class CoreUsers {
 							if(user.get().getAccount() == core_Users.getAccount() && user.get().getBrowser().equals(core_Users.getBrowser()) && user.get().getFirstname().equals(core_Users.getFirstname()) &&  user.get().getHas_token() == core_Users.getHas_token() &&
 									user.get().getIp_address().equals(core_Users.getIp_address()) && user.get().getLanguage().equals(core_Users.getLanguage()) && user.get().getLast_auth().toString().equals(core_Users.getLast_auth().format(formatter)) && 
 									user.get().getLastname().equals(core_Users.getLastname()) && user.get().getPhoto() == core_Users.getPhoto() && user.get().getRole() == core_Users.getRole() && user.get().getStatus() == core_Users.getStatus() && 
-									user.get().getTimezone() == core_Users.getTimezone() ) {
+									user.get().getTimezone() == core_Users.getTimezone() && user.get().getEmail().equals(core_Users.getEmail()) ) {
 				        	return ResponseHandler.ResponseOk("Nothing was changed!", HttpStatus.OK, null);
 						}
 						
@@ -376,7 +375,7 @@ public class CoreUsers {
 							if(user.get().getAccount() == core_Users.getAccount() && user.get().getBrowser().equals(core_Users.getBrowser()) && user.get().getFirstname().equals(core_Users.getFirstname()) &&  user.get().getHas_token() == core_Users.getHas_token() &&
 									user.get().getIp_address().equals(core_Users.getIp_address()) && user.get().getLanguage().equals(core_Users.getLanguage()) && user.get().getLast_auth().toString().equals(core_Users.getLast_auth().format(formatter)) && 
 									user.get().getLastname().equals(core_Users.getLastname()) && user.get().getPhoto().equals(core_Users.getPhoto()) && user.get().getRole() == core_Users.getRole() && user.get().getStatus() == core_Users.getStatus() && 
-									user.get().getTimezone().equals(core_Users.getTimezone())) {
+									user.get().getTimezone().equals(core_Users.getTimezone()) && user.get().getEmail().equals(core_Users.getEmail())) {
 				        	return ResponseHandler.ResponseOk("Nothing was changed!", HttpStatus.OK, null);
 							}
 						}
