@@ -26,12 +26,9 @@ public class Provider {
 			st=con.createStatement();  
 			rs=st.executeQuery("SELECT acc.password,p.name FROM core_access_credentials acc INNER JOIN cloud_providers_accounts cpa ON cpa.credential_id = acc.id INNER JOIN providers p ON p.id = cpa.provider_id WHERE cpa.account_id='"+account_id+"' AND cpa.status IN (1,2,3) AND acc.status IN (1,2,3) AND p.status IN (1,2,3)");
 	        if(rs != null && rs.next()) {
-	        		//get the encrypted api key
 	        		PROVIDER_KEY = rs.getString("password");
-	        		//get provider name
 	        		PROVIDER_NAME = rs.getString("name");
 	        		con.close();
-	        		//return the decrypted api key
 					return decrypt(PROVIDER_KEY);
 	        }else {
 	            st=null;
@@ -40,7 +37,9 @@ public class Provider {
 	        	return PROVIDER_KEY;
 	        }
 
-		}catch(Exception e){ System.out.println("e3 "+e);}
+		}catch(Exception ex){ 
+	        ex.printStackTrace();
+		}
         st=null;
         rs=null;
 		return PROVIDER_KEY;  
