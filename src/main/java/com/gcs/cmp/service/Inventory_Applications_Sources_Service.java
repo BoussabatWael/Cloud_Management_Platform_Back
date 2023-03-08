@@ -13,4 +13,5 @@ public interface Inventory_Applications_Sources_Service {
 	public Inventory_Applications_Sources updateInventory_Applications_Sources(Inventory_Applications_Sources inventory_Applications_Sources);
 	public Optional<Inventory_Applications_Sources> findInventory_Applications_SourcesId(Long id) ;
 	public String deleteInventory_Applications_Sources(Long id) ;
+	
 }

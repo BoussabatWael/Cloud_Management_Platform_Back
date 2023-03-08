@@ -12,4 +12,5 @@ public interface Inventory_Servers_Versions_Service {
 	public Inventory_Servers_Versions updateInventory_Servers_Versions(Inventory_Servers_Versions inventory_Servers_Versions);
 	public Optional<Inventory_Servers_Versions> findInventory_Servers_VersionsById(Long id) ;
 	public String deleteInventory_Servers_Versions(Long id) ;
+	
 }

@@ -11,4 +11,5 @@ public interface Inventory_Templates_Apps_Service {
 	public Inventory_Templates_Apps updateInventory_Templates_Apps(Inventory_Templates_Apps inventory_Templates_Apps);
 	public Optional<Inventory_Templates_Apps> findInventory_Templates_AppsById(Long id) ;
 	public String deleteInventory_Templates_Apps(Long id) ;
+	
 }

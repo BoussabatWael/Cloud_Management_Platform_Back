@@ -20,15 +20,12 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
         type = SecuritySchemeType.APIKEY,in = SecuritySchemeIn.HEADER
 )
 @OpenAPIDefinition(
-		  info = @Info(title = "Cloud Management API", version = "v1"),
+		  info = @Info(title = "Cloud Management API", version = "v1.0"),
 	        security = {@SecurityRequirement(name = "Basic Auth"),@SecurityRequirement(name = "Token")}
 		)
 public class CMPApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(CMPApplication.class, args);
-		
 	}
-
-
 }

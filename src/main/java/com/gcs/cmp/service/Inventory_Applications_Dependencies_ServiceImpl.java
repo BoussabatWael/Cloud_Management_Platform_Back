@@ -49,8 +49,7 @@ public class Inventory_Applications_Dependencies_ServiceImpl implements Inventor
 			return "Application dependencies "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
 
 	@Override
@@ -59,5 +58,5 @@ public class Inventory_Applications_Dependencies_ServiceImpl implements Inventor
 		// TODO Auto-generated method stub
 		return inventory_Applications_Dependencies_Repo.getApplications_DependenciesListByApplicationID(account_id, application_id);
 	}
-
+	
 }

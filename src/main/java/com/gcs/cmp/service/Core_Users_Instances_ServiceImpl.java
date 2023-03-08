@@ -48,8 +48,6 @@ public class Core_Users_Instances_ServiceImpl implements Core_Users_Instances_Se
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
 
 	@Override
@@ -57,5 +55,5 @@ public class Core_Users_Instances_ServiceImpl implements Core_Users_Instances_Se
 		// TODO Auto-generated method stub
 		return core_Users_Instances_Repo.getUsers_InstancesByUserID(account_id, user_id);
 	}
-
+	
 }

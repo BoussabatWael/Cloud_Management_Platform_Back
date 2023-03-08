@@ -27,10 +27,9 @@ import lombok.NoArgsConstructor;
 @Table(name="monitoring_policies_servers")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Monitoring_Policies_Servers implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

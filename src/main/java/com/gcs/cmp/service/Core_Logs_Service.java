@@ -19,4 +19,5 @@ public interface Core_Logs_Service {
 	public List<Core_Logs> getBackupLogsList(Long account_id, Long backup_id);
 	public Optional<Core_Logs> findCore_LogsById(Long id) ;
 	public String deleteCore_Logs(Long id) ;
+	
 }

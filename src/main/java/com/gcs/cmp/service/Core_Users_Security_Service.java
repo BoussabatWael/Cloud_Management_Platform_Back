@@ -15,4 +15,5 @@ public interface Core_Users_Security_Service {
 	public Optional<Core_Users_Security> getUsers_SecurityByUserID(Long account_id, Long user_id);
 	public Optional<Core_Users_Security> findCore_Users_SecurityById(Long id) ;
 	public String deleteCore_Users_Security(Long id) ;
+	
 }

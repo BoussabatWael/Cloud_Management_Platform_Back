@@ -12,4 +12,5 @@ public interface Inventory_Applications_Dependencies_Service {
 	public Inventory_Applications_Dependencies updateInventory_Applications_Dependencies(Inventory_Applications_Dependencies inventory_Applications_Dependencies);
 	public Optional<Inventory_Applications_Dependencies> findInventory_Applications_DependenciesById(Long id) ;
 	public String deleteInventory_Applications_Dependencies(Long id) ;
+	
 }

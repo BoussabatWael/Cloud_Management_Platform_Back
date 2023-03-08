@@ -12,4 +12,5 @@ public interface Core_Accounts_Modules_Repo extends JpaRepository<Core_Accounts_
 
 	@Query(value="select * from core_accounts_modules where status IN (1,2,3) AND account_id=?1",nativeQuery=true)
 	public List<Core_Accounts_Modules> findCore_Accounts_ModulesList(Long account_id);
+	
 }

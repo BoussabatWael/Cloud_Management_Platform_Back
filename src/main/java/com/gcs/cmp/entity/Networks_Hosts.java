@@ -27,10 +27,9 @@ import lombok.NoArgsConstructor;
 @Table(name="networks_hosts")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Networks_Hosts implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

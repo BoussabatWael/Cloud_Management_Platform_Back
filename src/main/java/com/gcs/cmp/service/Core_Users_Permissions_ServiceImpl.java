@@ -48,8 +48,6 @@ public class Core_Users_Permissions_ServiceImpl implements Core_Users_Permission
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
 
 	@Override
@@ -63,5 +61,5 @@ public class Core_Users_Permissions_ServiceImpl implements Core_Users_Permission
 		// TODO Auto-generated method stub
 		return core_Users_Permissions_Repo.getActiveUsers_PermissionsByUserID(user_id);
 	}
-
+	
 }

@@ -13,4 +13,5 @@ public interface Networks_Domain_Names_Repo extends JpaRepository<Networks_Domai
 	
 	@Query(value="SELECT * FROM networks_domain_names WHERE account_id=?1 AND parent_id=?2 AND status IN (1,2,3)",nativeQuery=true)
 	public List<Networks_Domain_Names> getNetworks_Sub_Domains_List(Long account_id, Long parent_id);
+	
 }

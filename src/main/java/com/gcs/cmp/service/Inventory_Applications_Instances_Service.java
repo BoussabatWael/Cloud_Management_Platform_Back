@@ -14,4 +14,5 @@ public interface Inventory_Applications_Instances_Service {
 	public Inventory_Applications_Instances updateInventory_Applications_Instances(Inventory_Applications_Instances inventory_Applications_Instances);
 	public Optional<Inventory_Applications_Instances> findInventory_Applications_InstancesById(Long id) ;
 	public String deleteInventory_Applications_Instances(Long id) ;
+	
 }

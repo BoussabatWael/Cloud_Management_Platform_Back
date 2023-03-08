@@ -25,10 +25,9 @@ import lombok.NoArgsConstructor;
 @Table(name="core_users_permissions")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Core_Users_Permissions implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

@@ -47,8 +47,7 @@ public class Monitoring_Metrics_ServiceImpl implements Monitoring_Metrics_Servic
 			return "Monitoring metric "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}	
 	}
-
+	
 }

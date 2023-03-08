@@ -10,8 +10,11 @@ import lombok.NoArgsConstructor;
 
 @Data @AllArgsConstructor @NoArgsConstructor
 public class ExceptionResponse {
-	 private String Message;
-	 private String Code;
-	 @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-	 private LocalDateTime timestamp;
+	
+	private String Message;
+	
+	private String Code;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+	private LocalDateTime timestamp;
 }

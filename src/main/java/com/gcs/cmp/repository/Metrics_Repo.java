@@ -10,4 +10,5 @@ public interface Metrics_Repo extends JpaRepository<Metrics, Long>{
 
 	@Query(value="SELECT * FROM metrics WHERE status IN (1,2,3)",nativeQuery=true)
 	public List<Metrics> getMetricsList();
+	
 }

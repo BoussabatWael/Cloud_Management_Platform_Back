@@ -47,8 +47,7 @@ public class Core_Users_Tokens_ServiceImpl implements Core_Users_Tokens_Service{
 			return "User token "+id+" has been deleted";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
 
 	@Override
@@ -56,5 +55,5 @@ public class Core_Users_Tokens_ServiceImpl implements Core_Users_Tokens_Service{
 		// TODO Auto-generated method stub
 		return core_Users_Tokens_Repo.getUsersTokenByUserID(user_id);
 	}
-
+	
 }

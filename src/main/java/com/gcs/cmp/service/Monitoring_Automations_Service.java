@@ -11,4 +11,5 @@ public interface Monitoring_Automations_Service {
 	public Monitoring_Automations updateMonitoring_Automations(Monitoring_Automations monitoring_Automations);
 	public Optional<Monitoring_Automations> findMonitoring_AutomationsById(Long id) ;
 	public String deleteMonitoring_Automations(Long id) ;
+	
 }

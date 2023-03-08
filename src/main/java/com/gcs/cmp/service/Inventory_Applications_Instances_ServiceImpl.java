@@ -20,7 +20,6 @@ public class Inventory_Applications_Instances_ServiceImpl implements Inventory_A
 			Inventory_Applications_Instances inventory_Applications_Instances) {
 		// TODO Auto-generated method stub
 		return inventory_Applications_Instances_Repo.save(inventory_Applications_Instances);
-
 	}
 
 	@Override
@@ -51,8 +50,6 @@ public class Inventory_Applications_Instances_ServiceImpl implements Inventory_A
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
 
 	@Override
@@ -67,5 +64,5 @@ public class Inventory_Applications_Instances_ServiceImpl implements Inventory_A
 		// TODO Auto-generated method stub
 		return inventory_Applications_Instances_Repo.getInventoryApplicationsByInstanceID(account_id, instance_id);
 	}
-
+	
 }

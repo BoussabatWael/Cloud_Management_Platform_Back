@@ -47,8 +47,7 @@ public class Backup_Settings_ServiceImpl implements Backup_Settings_Service{
 			return "Backup settings "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

@@ -49,8 +49,7 @@ public class Monitoring_Policies_Alerts_ServiceImpl implements Monitoring_Polici
 			return "Monitoring policies alert "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

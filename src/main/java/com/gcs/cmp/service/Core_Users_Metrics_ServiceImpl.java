@@ -47,8 +47,7 @@ public class Core_Users_Metrics_ServiceImpl implements Core_Users_Metrics_Servic
 			return "User metric "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

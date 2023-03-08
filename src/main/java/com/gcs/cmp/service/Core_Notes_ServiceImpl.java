@@ -49,5 +49,5 @@ public class Core_Notes_ServiceImpl implements Core_Notes_Service{
 			return null;
 		}
 	}
-
+	
 }

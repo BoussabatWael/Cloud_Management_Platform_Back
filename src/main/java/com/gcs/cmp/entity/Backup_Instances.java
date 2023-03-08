@@ -27,9 +27,7 @@ import lombok.NoArgsConstructor;
 @Table(name="backup_instances")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Backup_Instances implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	
 	@Id

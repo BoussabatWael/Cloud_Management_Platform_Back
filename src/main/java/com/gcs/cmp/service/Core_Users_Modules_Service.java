@@ -13,4 +13,5 @@ public interface Core_Users_Modules_Service {
 	public Core_Users_Modules updateCore_Users_Modules(Core_Users_Modules core_Users_Modules);
 	public Optional<Core_Users_Modules> findCore_Users_ModulesById(Long id) ;
 	public String deleteCore_Users_Modules(Long id) ;
+	
 }

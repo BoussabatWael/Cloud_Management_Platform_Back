@@ -48,8 +48,6 @@ public class Core_Users_Security_ServiceImpl implements Core_Users_Security_Serv
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
 
 	@Override
@@ -64,5 +62,4 @@ public class Core_Users_Security_ServiceImpl implements Core_Users_Security_Serv
 		return core_Users_Security_Repo.getUsersSecurityByLogin(login);
 	}
 	
-
 }

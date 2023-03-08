@@ -14,7 +14,6 @@ public class Networks_SSL_Certificates_ServiceImpl implements Networks_SSL_Certi
 
 	@Autowired
 	private Networks_SSL_Certificates_Repo networks_SSL_Certificates_Repo;
-
 	
 	@Override
 	public Networks_SSL_Certificates addNetworks_SSL_Certificates(Networks_SSL_Certificates networks_SSL_Certificates) {
@@ -49,8 +48,7 @@ public class Networks_SSL_Certificates_ServiceImpl implements Networks_SSL_Certi
 			return "SSL certificate "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
 
 	@Override
@@ -59,5 +57,5 @@ public class Networks_SSL_Certificates_ServiceImpl implements Networks_SSL_Certi
 		// TODO Auto-generated method stub
 		return networks_SSL_Certificates_Repo.getDomainNetworks_SSL_CertificatesList(account_id, domain_name_id);
 	}
-
+	
 }

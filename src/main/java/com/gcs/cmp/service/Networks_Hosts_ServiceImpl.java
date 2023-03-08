@@ -55,4 +55,5 @@ public class Networks_Hosts_ServiceImpl implements Networks_Hosts_Service{
 		// TODO Auto-generated method stub
 		return networks_Hosts_Repo.getDomainNetworks_HostsList(account_id, domain_name_id);
 	}
+	
 }

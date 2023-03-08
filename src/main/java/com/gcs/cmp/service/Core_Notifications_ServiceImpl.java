@@ -47,8 +47,7 @@ public class Core_Notifications_ServiceImpl implements Core_Notifications_Servic
 			return "Notification "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}	
 	}
-
+	
 }

@@ -14,4 +14,5 @@ public interface Cloud_Providers_Accounts_Repo extends JpaRepository<Cloud_Provi
 	
 	@Query(value="SELECT a.* FROM cloud_providers_accounts a INNER JOIN providers b ON a.provider_id=b.id WHERE a.status IN (1,2,3) AND a.provider_id=?1 AND b.status IN (1,2,3)",nativeQuery=true)
 	public List<Cloud_Providers_Accounts> findCloudProvidersAccountsByProviderID(Long provider_id);
+	
 }

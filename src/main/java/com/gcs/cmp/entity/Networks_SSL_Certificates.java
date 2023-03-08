@@ -28,10 +28,9 @@ import lombok.NoArgsConstructor;
 @Table(name="networks_ssl_certificates")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Networks_SSL_Certificates implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

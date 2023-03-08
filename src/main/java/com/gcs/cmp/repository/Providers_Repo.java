@@ -12,4 +12,5 @@ public interface Providers_Repo extends JpaRepository<Providers, Long>{
 
 	@Query(value="SELECT * FROM providers WHERE status IN (1,2,3)",nativeQuery=true)
 	public List<Providers> getProvidersList();
+	
 }

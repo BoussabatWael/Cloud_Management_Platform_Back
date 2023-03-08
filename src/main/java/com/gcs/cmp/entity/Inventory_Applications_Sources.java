@@ -28,10 +28,9 @@ import lombok.NoArgsConstructor;
 @Table(name="inventory_applications_sources")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Inventory_Applications_Sources implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

@@ -12,4 +12,5 @@ public interface Inventory_Servers_Service {
 	public Inventory_Servers updateInventory_Servers(Inventory_Servers inventory_Servers);
 	public Optional<Inventory_Servers> findInventory_ServersById(Long id) ;
 	public String deleteInventory_Servers(Long id) ;
+	
 }

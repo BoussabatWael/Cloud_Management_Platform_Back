@@ -11,4 +11,5 @@ public interface Monitoring_Settings_Service {
 	public Monitoring_Settings updateMonitoring_Settings(Monitoring_Settings monitoring_Settings);
 	public Optional<Monitoring_Settings> findMonitoring_SettingsById(Long id) ;
 	public String deleteMonitoring_Settings(Long id) ;
+	
 }

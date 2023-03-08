@@ -32,4 +32,5 @@ public interface Core_Logs_Repo extends JpaRepository<Core_Logs, Long> {
 	
 	@Query(value="SELECT a.* FROM core_logs a LEFT JOIN backup_operations b ON b.id = a.element_id AND a.element = 16 LEFT JOIN backup_executions c ON c.id = a.element_id AND a.element = 5 AND a.source=13 LEFT JOIN core_users d ON d.id = a.user_id LEFT JOIN backup_instances e ON e.id = a.element_id AND a.element = 17 AND a.source=13 LEFT JOIN backup_executions z ON z.id = e.backup_id WHERE d.account_id =?1 AND d.status IN (1,2,3) AND (a.element IN(5,16,17) AND a.element_id =?2 AND a.source IN(13,14)) OR c.operation_id=?2 OR (e.backup_id=z.id AND z.operation_id=?2)",nativeQuery=true)
 	public List<Core_Logs> getBackupLogsList(Long account_id, Long backup_op_id);
+	
 }

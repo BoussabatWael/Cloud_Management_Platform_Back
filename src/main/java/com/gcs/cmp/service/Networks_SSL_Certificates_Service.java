@@ -12,4 +12,5 @@ public interface Networks_SSL_Certificates_Service {
 	public Networks_SSL_Certificates updateNetworks_SSL_Certificates(Networks_SSL_Certificates networks_SSL_Certificates);
 	public Optional<Networks_SSL_Certificates> findNetworks_SSL_CertificatesById(Long id) ;
 	public String deleteNetworks_SSL_Certificates(Long id) ;
+	
 }

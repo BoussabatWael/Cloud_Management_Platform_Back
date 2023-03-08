@@ -20,7 +20,6 @@ public class Api_Keys_Permissions_ServiceImpl implements Api_Keys_Permissions_Se
 		return api_Keys_Permissions_Repo.save(api_Keys_Permissions);
 	}
 
-
 	@Override
 	public List<Api_Keys_Permissions> getApi_Keys_PermissionsList(Long account_id) {
 		// TODO Auto-generated method stub
@@ -48,5 +47,5 @@ public class Api_Keys_Permissions_ServiceImpl implements Api_Keys_Permissions_Se
 			return null;
 		}
 	}
-
+	
 }

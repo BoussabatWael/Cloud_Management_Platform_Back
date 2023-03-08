@@ -11,4 +11,5 @@ public interface Inventory_Templates_Service {
 	public Inventory_Templates updateInventory_Templatess(Inventory_Templates inventory_Templates);
 	public Optional<Inventory_Templates> findInventory_TemplatesById(Long id) ;
 	public String deleteInventory_Templates(Long id) ;
+	
 }

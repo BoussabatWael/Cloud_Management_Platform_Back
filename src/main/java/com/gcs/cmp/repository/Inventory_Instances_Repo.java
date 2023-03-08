@@ -17,4 +17,5 @@ public interface Inventory_Instances_Repo extends JpaRepository<Inventory_Instan
 	
 	@Query(value="SELECT COUNT(*) FROM inventory_instances WHERE status IN (1,2,3) AND account_id=?1",nativeQuery=true)
 	public Object getAllInstancesNumber(Long account_id);
+	
 }

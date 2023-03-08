@@ -14,4 +14,5 @@ public interface Core_Users_Tokens_Repo extends JpaRepository<Core_Users_Tokens,
 	
 	@Query(value="SELECT a.* FROM core_users_tokens a INNER JOIN core_users b ON a.user_id = b.id WHERE a.user_id=?1 AND a.status IN (1,2,3) AND b.status IN (1,2,3)",nativeQuery=true)
 	public Optional<Core_Users_Tokens> getUsersTokenByUserID(Long user_id);
+	
 }

@@ -11,4 +11,5 @@ public interface Inventory_Templates_Repo extends JpaRepository<Inventory_Templa
 
 	@Query(value="SELECT * FROM inventory_templates WHERE account_id=?1 AND status IN (1,2,3)",nativeQuery=true)
 	public List<Inventory_Templates> getInventory_TemplatesList(Long account_id);
+	
 }

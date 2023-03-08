@@ -12,4 +12,5 @@ public interface Networks_Domain_Names_Service {
 	public Networks_Domain_Names updateNetworks_Domain_Names(Networks_Domain_Names networks_Domain_Names);
 	public Optional<Networks_Domain_Names> findNetworks_Domain_NamesById(Long id) ;
 	public String deleteNetworks_Domain_Names(Long id) ;
+	
 }

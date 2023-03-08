@@ -48,8 +48,7 @@ public class Core_Accounts_Modules_ServiceImpl implements Core_Accounts_Modules_
 			return "Account module "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

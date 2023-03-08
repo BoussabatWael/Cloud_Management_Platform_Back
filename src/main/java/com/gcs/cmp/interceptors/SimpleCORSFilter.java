@@ -59,12 +59,10 @@ public class SimpleCORSFilter implements Filter{
 		    //response.setHeader("Access-Control-Max-Age", "3600");
 		    response.setHeader("Access-Control-Allow-Headers", "*");
 		    chain.doFilter(req, res);
-
 	    }
 	    else {
 	    	throw new MethodnotallowedException("Request "+request.getMethod()+" is NOT supported!");
-	    }
-	    
+	    }	    
 	}
 
 	@Override
@@ -74,6 +72,4 @@ public class SimpleCORSFilter implements Filter{
 	@Override
 	public void destroy() {
 	}
-
-
 }

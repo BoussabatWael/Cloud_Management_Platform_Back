@@ -13,4 +13,5 @@ public interface Core_Notes_Service {
 	public Core_Notes updateCore_Notes(Core_Notes core_Notes);
 	public Optional<Core_Notes> findCore_NotesById(Long id) ;
 	public String deleteCore_Notes(Long id) ;
+	
 }

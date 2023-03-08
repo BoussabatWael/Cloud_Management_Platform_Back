@@ -12,4 +12,5 @@ public interface Core_Accounts_Service {
 	public Core_Accounts updateCore_Accounts(Core_Accounts core_Accounts);
 	public Optional<Core_Accounts> findCore_AccountsById(Long id) ;
 	public String deleteCore_Accounts(Long id) ;
+	
 }

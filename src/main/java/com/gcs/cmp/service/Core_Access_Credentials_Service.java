@@ -14,4 +14,5 @@ public interface Core_Access_Credentials_Service {
 	public List<Core_Access_Credentials> 	getServersAccess_CredentialsByElementID(Long account_id,Long element_id) ;
 	public Optional<Core_Access_Credentials> findCore_CredentialsById(Long id) ;
 	public String deleteCore_Credentials(Long id) ;
+	
 }

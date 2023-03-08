@@ -47,8 +47,7 @@ public class Monitoring_Settings_ServiceImpl implements Monitoring_Settings_Serv
 			return "Monitoring settings "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}	
 	}
-
+	
 }

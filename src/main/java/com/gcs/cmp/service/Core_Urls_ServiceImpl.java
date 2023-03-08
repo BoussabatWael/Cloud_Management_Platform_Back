@@ -48,8 +48,6 @@ public class Core_Urls_ServiceImpl implements Core_Urls_Service{
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
-
+	
 }

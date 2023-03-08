@@ -39,5 +39,5 @@ public class Core_Api_Logs_ServiceImpl implements Core_Api_Logs_Service{
 		core_Api_Logs_Repo.deleteById(id);
 		return "Api logs "+id+" has been deleted!";
 	}
-
+	
 }

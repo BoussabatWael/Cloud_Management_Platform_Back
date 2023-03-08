@@ -12,4 +12,5 @@ public interface Api_Keys_Permissions_Service {
 	public Api_Keys_Permissions updateApi_Keys_Permissions(Api_Keys_Permissions api_Keys_Permissions);
 	public Optional<Api_Keys_Permissions> findApi_Keys_PermissionsId(Long id) ;
 	public String deleteApi_Keys_Permissions(Long id) ;
+	
 }

@@ -12,4 +12,5 @@ public interface Networks_Hosts_Service {
 	public Networks_Hosts updateNetworks_Hosts(Networks_Hosts networks_Hosts);
 	public Optional<Networks_Hosts> findNetworks_HostsById(Long id) ;
 	public String deleteNetworks_Hosts(Long id) ;
+	
 }

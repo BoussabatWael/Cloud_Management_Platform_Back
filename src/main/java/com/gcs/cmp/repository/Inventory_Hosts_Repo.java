@@ -11,4 +11,5 @@ public interface Inventory_Hosts_Repo extends JpaRepository<Inventory_Hosts, Lon
 
 	@Query(value="SELECT a.* FROM inventory_hosts a INNER JOIN cloud_providers_accounts b ON a.cloud_provider_id = b.id WHERE b.status IN (1,2,3) AND a.account_id=?1 AND a.status IN (1,2,3)",nativeQuery=true)
 	public List<Inventory_Hosts> getInventory_HostsList(Long account_id);
+	
 }

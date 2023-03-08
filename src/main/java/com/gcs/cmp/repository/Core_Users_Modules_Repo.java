@@ -14,4 +14,5 @@ public interface Core_Users_Modules_Repo extends JpaRepository<Core_Users_Module
 	
 	@Query(value="SELECT a.* FROM core_users_modules a INNER JOIN core_users b ON a.user_id = b.id INNER JOIN modules c ON a.module_id = c.id WHERE a.status IN (1,2,3) AND a.user_id=?2 AND b.status IN (1,2,3) AND b.account_id =?1 AND c.status IN (1,2,3)",nativeQuery=true)
 	public List<Core_Users_Modules> getUsers_ModulesByUserID(Long account_id, Long user_id);
+	
 }

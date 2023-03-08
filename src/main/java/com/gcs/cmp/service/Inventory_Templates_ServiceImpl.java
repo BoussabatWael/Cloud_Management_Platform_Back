@@ -47,8 +47,7 @@ public class Inventory_Templates_ServiceImpl implements Inventory_Templates_Serv
 			return "Template "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

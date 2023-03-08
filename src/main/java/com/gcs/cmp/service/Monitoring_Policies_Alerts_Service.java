@@ -11,4 +11,5 @@ public interface Monitoring_Policies_Alerts_Service {
 	public Monitoring_Policies_Alerts updateMonitoring_Policies_Alerts(Monitoring_Policies_Alerts monitoring_Policies_Alerts);
 	public Optional<Monitoring_Policies_Alerts> findMonitoring_Policies_AlertsById(Long id) ;
 	public String deleteMonitoring_Policies_Alerts(Long id) ;
+	
 }

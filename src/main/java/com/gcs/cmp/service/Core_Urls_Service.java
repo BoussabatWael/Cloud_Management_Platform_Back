@@ -13,4 +13,5 @@ public interface Core_Urls_Service {
 	public Core_Urls updateCore_Urls(Core_Urls core_Urls);
 	public Optional<Core_Urls> findCore_UrlsById(Long id) ;
 	public String deleteCore_Urls(Long id) ;
+	
 }

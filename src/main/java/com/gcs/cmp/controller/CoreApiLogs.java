@@ -30,7 +30,9 @@ import com.gcs.cmp.repository.Api_Keys_Repo;
 import com.gcs.cmp.service.Core_Api_Logs_Service;
 import com.gcs.cmp.validators.Inputs_Validations;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "API logs", description = "Manage core API logs")
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/core/apilogs")
@@ -44,39 +46,34 @@ public class CoreApiLogs {
 	
 	private HttpMessageNotReadableException ex;
 	
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Object> handleException(HttpMessageNotReadableException exception) {
-        String msg = null;
-        Throwable cause = exception.getCause();
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<Object> handleException(HttpMessageNotReadableException exception) {
+		String msg = null;
+	    Throwable cause = exception.getCause();
 
-        if (cause instanceof JsonParseException) {
-            JsonParseException jpe = (JsonParseException) cause;
-            msg = jpe.getOriginalMessage();
-        }
-
-        // special case of JsonMappingException below, too much class detail in error messages
-        else if (cause instanceof MismatchedInputException) {
-            MismatchedInputException mie = (MismatchedInputException) cause;
-            if (mie.getPath() != null && mie.getPath().size() > 0) {
-                msg = "Invalid request field : " + mie.getPath().get(0).getFieldName();
-            }
-
-            // just in case, haven't seen this condition
-            else {
-                msg = "Invalid request message";
-            }
-        }
-
-        else if (cause instanceof JsonMappingException) {
-            JsonMappingException jme = (JsonMappingException) cause;
-            msg = jme.getOriginalMessage();
-            if (jme.getPath() != null && jme.getPath().size() > 0) {
-                msg = "Invalid request field : " + jme.getPath().get(0).getFieldName() +
-                      ": " + msg;
-            }
-        }
+	    if (cause instanceof JsonParseException) {
+	    	JsonParseException jpe = (JsonParseException) cause;
+	        msg = jpe.getOriginalMessage();
+	    }
+	    else if (cause instanceof MismatchedInputException) {
+	    	MismatchedInputException mie = (MismatchedInputException) cause;
+	        if (mie.getPath() != null && mie.getPath().size() > 0) {
+	        	msg = "Invalid request field : " + mie.getPath().get(0).getFieldName();
+	        }
+	        else {
+	        	msg = "Invalid request message";
+	        }
+	    }
+	    else if (cause instanceof JsonMappingException) {
+	    	JsonMappingException jme = (JsonMappingException) cause;
+	        msg = jme.getOriginalMessage();
+	        if (jme.getPath() != null && jme.getPath().size() > 0) {
+	        	msg = "Invalid request field : " + jme.getPath().get(0).getFieldName() +
+	                      ": " + msg;
+	        }
+	    }
         return ResponseHandler.ResponseBadRequest(msg, HttpStatus.BAD_REQUEST, null);
-    }
+	}
     
 	@GetMapping("")
 	public ResponseEntity<Object> getAllCore_Api_Logs(){	
@@ -224,7 +221,7 @@ public class CoreApiLogs {
 			}catch (Exception e) {
 	            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
 	        }
-		}
-		
+		}		
 	}
+	
 }

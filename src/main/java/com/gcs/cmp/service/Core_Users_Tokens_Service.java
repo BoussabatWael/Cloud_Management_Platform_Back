@@ -12,4 +12,5 @@ public interface Core_Users_Tokens_Service {
 	public Optional<Core_Users_Tokens> findCore_Users_TokensById(Long id) ;
 	public Optional<Core_Users_Tokens> getUsersTokenByUserID(Long user_id);
 	public String deleteCore_Users_Tokens(Long id) ;
+	
 }

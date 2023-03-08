@@ -12,4 +12,5 @@ public interface Inventory_Hosts_Service {
 	public Inventory_Hosts updateInventory_Hosts(Inventory_Hosts inventory_Hosts);
 	public Optional<Inventory_Hosts> findInventory_HostsById(Long id) ;
 	public String deleteInventory_Hosts(Long id) ;
+	
 }

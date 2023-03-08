@@ -13,4 +13,5 @@ public interface Core_Users_Instances_Service {
 	public Core_Users_Instances updateCore_Users_Instances(Core_Users_Instances core_Users_Instances);
 	public Optional<Core_Users_Instances> findCore_Users_InstancesById(Long id) ;
 	public String deleteCore_Users_Instances(Long id) ;
+	
 }

@@ -17,4 +17,5 @@ public interface Inventory_Applications_Service {
 	public List<Inventory_Applications> getApplicationsByInstanceID(Long account_id,Long instance_id);
 	public Optional<Inventory_Applications> findInventory_ApplicationsById(Long id) ;
 	public String deleteInventory_Applications(Long id) ;
+	
 }

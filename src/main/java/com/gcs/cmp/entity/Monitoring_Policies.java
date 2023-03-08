@@ -32,10 +32,9 @@ import lombok.NoArgsConstructor;
 @Table(name="monitoring_policies")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Monitoring_Policies implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

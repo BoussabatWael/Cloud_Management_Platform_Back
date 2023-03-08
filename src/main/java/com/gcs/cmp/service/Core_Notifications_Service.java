@@ -11,4 +11,5 @@ public interface Core_Notifications_Service {
 	public Core_Notifications updateCore_Notifications(Core_Notifications core_Notifications);
 	public Optional<Core_Notifications> findCore_NotificationsById(Long id) ;
 	public String deleteCore_Notifications(Long id) ;
+	
 }

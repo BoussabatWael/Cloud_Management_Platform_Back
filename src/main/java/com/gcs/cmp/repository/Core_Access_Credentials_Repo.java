@@ -15,4 +15,5 @@ public interface Core_Access_Credentials_Repo extends JpaRepository<Core_Access_
 	
 	@Query(value="SELECT * FROM core_access_credentials WHERE account_id=?1 AND element=1 AND element_id=?2 AND status IN (1,2,3)",nativeQuery=true)
 	public List<Core_Access_Credentials> getServersAccess_CredentialsByElementID(Long account_id, Long element_id);
+	
 }

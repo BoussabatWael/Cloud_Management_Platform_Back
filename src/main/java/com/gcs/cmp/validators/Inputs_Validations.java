@@ -28,8 +28,7 @@ public class Inputs_Validations extends ExceptionResponse{
 				return false;
 		    }
 	}
-	
-	
+		
 	public ExceptionResponse DateValidation(String input) {
 		  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	        try {
@@ -39,19 +38,16 @@ public class Inputs_Validations extends ExceptionResponse{
 	        }
 			return new ExceptionResponse(input+" is valid", "field valid", getTimestamp());
 	}
-	
-	
+		
 	public static boolean CheckInt(String s) {
 	    try {
 	        Integer.parseInt(s);
 	        return true;
 	    } catch (NumberFormatException ex) {
 	    	return false;
-	    }
-	    
+	    } 
 	}
-	
-	
+		
 	public static String encrypt(String value) {
 		String key = "AAAAAAAAAAAAAAAA";
 		String initVector = "BBBBBBBBBBBBBBBB";
@@ -69,8 +65,7 @@ public class Inputs_Validations extends ExceptionResponse{
 	    }
 	    return null;
 	}
-	
-	
+		
 	public static String decrypt(String value) {
 		String key = "AAAAAAAAAAAAAAAA";
 		String initVector = "BBBBBBBBBBBBBBBB";
@@ -89,8 +84,7 @@ public class Inputs_Validations extends ExceptionResponse{
 	    }
 	    return null;
 	}
-	
-	
+		
 	public static String generateKey() {
 		String generatedKey = "";
 		String possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -105,7 +99,5 @@ public class Inputs_Validations extends ExceptionResponse{
 	        ex.printStackTrace();
 	    }
 	    return null;
-	}
-	
-	
+	}	
 }

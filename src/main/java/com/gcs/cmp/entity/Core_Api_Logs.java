@@ -27,10 +27,9 @@ import lombok.NoArgsConstructor;
 @Table(name="core_api_logs")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Core_Api_Logs implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

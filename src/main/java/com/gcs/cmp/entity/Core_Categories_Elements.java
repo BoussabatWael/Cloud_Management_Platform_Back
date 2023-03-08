@@ -23,10 +23,9 @@ import lombok.NoArgsConstructor;
 @Table(name="core_categories_elements")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Core_Categories_Elements implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

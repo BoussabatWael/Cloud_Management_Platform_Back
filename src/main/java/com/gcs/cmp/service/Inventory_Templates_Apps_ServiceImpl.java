@@ -47,8 +47,7 @@ public class Inventory_Templates_Apps_ServiceImpl implements Inventory_Templates
 			return "Template app "+id+" has been deleted";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

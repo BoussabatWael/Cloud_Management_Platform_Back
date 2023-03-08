@@ -28,10 +28,9 @@ import lombok.NoArgsConstructor;
 @Table(name="core_access_credentials")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Core_Access_Credentials implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

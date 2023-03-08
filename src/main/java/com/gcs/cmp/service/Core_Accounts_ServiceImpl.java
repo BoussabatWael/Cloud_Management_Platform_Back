@@ -65,8 +65,7 @@ public class Core_Accounts_ServiceImpl extends Inputs_Validations implements Cor
 		apikey.setType(1);
 		apikey.setStart_date(LocalDateTime.now());
 		api_Keys_Repo.save(apikey);
-		
-		
+				
 		Core_Users user = new Core_Users();
 		user.setFirstname(account.getName()+int_random);
 		user.setLastname(account.getName()+int_random);
@@ -132,8 +131,7 @@ public class Core_Accounts_ServiceImpl extends Inputs_Validations implements Cor
 			return "Account "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
-	}
+		}		
+	}	
 	
 }

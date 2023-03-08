@@ -13,4 +13,5 @@ public interface Inventory_Applications_Repo extends JpaRepository<Inventory_App
 	
 	@Query(value="SELECT app.* FROM inventory_applications app INNER JOIN inventory_applications_instances app_ins ON app.id = app_ins.application_id WHERE app.account_id=?1 AND app.status IN (1,2,3) AND app_ins.instance_id=?2 AND app_ins.status IN (1,2,3)",nativeQuery=true)
 	public List<Inventory_Applications> getApplicationsByInstanceID(Long account_id, Long instance_id);
+	
 }

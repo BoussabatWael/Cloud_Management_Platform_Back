@@ -32,10 +32,9 @@ import lombok.NoArgsConstructor;
 @Table(name="inventory_hosts")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Inventory_Hosts implements Serializable{
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

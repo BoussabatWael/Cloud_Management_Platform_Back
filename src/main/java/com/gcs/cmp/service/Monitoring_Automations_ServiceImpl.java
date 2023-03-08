@@ -47,8 +47,7 @@ public class Monitoring_Automations_ServiceImpl implements Monitoring_Automation
 			return "Monitoring automation "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

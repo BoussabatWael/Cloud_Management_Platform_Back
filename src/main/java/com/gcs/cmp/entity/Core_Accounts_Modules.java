@@ -27,10 +27,9 @@ import lombok.NoArgsConstructor;
 @Table(name="core_accounts_modules")
 @Data @AllArgsConstructor @NoArgsConstructor
 public class Core_Accounts_Modules implements Serializable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;

@@ -11,4 +11,5 @@ public interface Monitoring_Commands_Service {
 	public Monitoring_Commands updateMonitoring_Commands(Monitoring_Commands monitoring_Commands);
 	public Optional<Monitoring_Commands> findMonitoring_CommandsById(Long id) ;
 	public String deleteMonitoring_Commands(Long id) ;
+	
 }

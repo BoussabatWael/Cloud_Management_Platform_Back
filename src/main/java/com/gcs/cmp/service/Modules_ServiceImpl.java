@@ -47,9 +47,7 @@ public class Modules_ServiceImpl implements Modules_Service{
 			return "Module "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
-
+		}		
 	}
-
+	
 }

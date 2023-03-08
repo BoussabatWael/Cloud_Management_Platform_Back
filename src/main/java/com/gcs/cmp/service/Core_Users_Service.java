@@ -15,4 +15,5 @@ public interface Core_Users_Service {
 	public Core_Users updateUser(String users, MultipartFile file) throws Exception;
 	public Optional<Core_Users> findCore_UsersId(Long id) ;
 	public String deleteCore_Users(Long id) ;
+	
 }

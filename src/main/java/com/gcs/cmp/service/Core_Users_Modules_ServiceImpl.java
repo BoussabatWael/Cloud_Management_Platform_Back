@@ -48,8 +48,6 @@ public class Core_Users_Modules_ServiceImpl implements Core_Users_Modules_Servic
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
 
 	@Override
@@ -57,5 +55,5 @@ public class Core_Users_Modules_ServiceImpl implements Core_Users_Modules_Servic
 		// TODO Auto-generated method stub
 		return core_Users_Modules_Repo.getUsers_ModulesByUserID(account_id, user_id);
 	}
-
+	
 }

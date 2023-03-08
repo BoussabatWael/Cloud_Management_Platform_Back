@@ -49,5 +49,5 @@ public class Core_Categories_ServiceImpl implements Core_Categories_Service{
 			return null;
 		}	
 	}
-
+	
 }

@@ -41,24 +41,27 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 	
 	public static String route = null;
 	
+	public static String authHeader = null;
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
-	    //String allowed_methods = "POST,PUT,GET,OPTIONS,DELETE";
 		String method = request.getMethod();
 		route = request.getServletPath();
-		//String url  = request.getRequestURL().toString();
-		//System.out.println(url);
-		/*
-		if(route.equals("/error")) {
-			if(allowed_methods.contains(method)) {
-		    	throw new CustomException("Invalid Request URL...");
-			}else {
-		    	throw new CustomException("Request "+request.getMethod()+" is NOT supported!");
-			}
-		}*/
-		if(route.startsWith("/swagger-ui") || route.startsWith("/v3/api-docs")) {
+
+		if(route.startsWith("/swagger-ui") || route.startsWith("/v3/api-docs") || route.startsWith("/providers/digitalocean/actions") || 
+				route.startsWith("/providers/digitalocean/applications") || route.startsWith("/providers/digitalocean/application") || 
+				route.startsWith("/providers/digitalocean/customerbalance") || route.startsWith("/providers/digitalocean/billinghistory") || 
+				route.startsWith("/providers/digitalocean/invoices") || route.startsWith("/providers/digitalocean/domain/records") || 
+				route.startsWith("/providers/digitalocean/domain/record") || route.startsWith("/providers/digitalocean/domains") || 
+				route.startsWith("/providers/digitalocean/domain") || route.startsWith("/providers/digitalocean/droplet/actions") || 
+				route.startsWith("/providers/digitalocean/droplets") || route.startsWith("/providers/digitalocean/droplet") || 
+				route.startsWith("/providers/digitalocean/droplet/backups") || route.startsWith("/providers/digitalocean/droplet/snapshots") || 
+				route.startsWith("/providers/digitalocean/droplet/firewalls") || route.startsWith("/providers/digitalocean/firewalls") || 
+				route.startsWith("/providers/digitalocean/firewall") || route.startsWith("/providers/digitalocean/regions") || 
+				route.startsWith("/providers/digitalocean/sizes") || route.startsWith("/providers/ovh/domains")) {
+			authHeader = request.getHeader("Authorization");
 			return true;
 		}
 		else {
@@ -77,12 +80,11 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 				    }
 				    
 				    ArrayList<Map<String, String>> res = checkApiKey(key);
-				    if(!res.isEmpty()) {
+				    if(!(res == null)) {
 				    	/// type 1 : front
 				    	if(TYPE.equals("1")) {
 				    		String token = request.getHeader("Token");
 				    		if (token != null && token !="undefined") {
-				    			//System.out.println(token);
 							    String result = checkUserKey(token);
 							    if(!result.equals("")) {
 							    	/// filter by global user account
@@ -90,44 +92,39 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 							    	if(!acc.equals("")) {
 								    	return true;
 							    	}else {
-										throw new UnauthorizedException("Error... Account status inactive!");
+										throw new UnauthorizedException("Account status inactive.");
 							    	}
 							    }else {
-							    	throw new CustomException("Token error... Invalid credentials!");
-							    }
-							    
+							    	throw new UnauthorizedException("Invalid token.");
+							    }							    
 				    		}else {
 				    			if(GLOBAL_ACCOUNT != null) {
 				    				String acc = checkAccountValidation(GLOBAL_ACCOUNT);
 					    			if(acc.equals("")) {
-										throw new UnauthorizedException("Error... Account status inactive!");
+										throw new UnauthorizedException("Account status inactive.");
 							    	}
 				    			}
 				    			/// no need for account id
 						    	if(method.equals("GET")) {
 						    		String[] ch = route.split("/");
-						    		//String req_param = ch[ch.length-1];
-
 						    		if(ch[ch.length-2].equals("get")) {
 						    			if( Inputs_Validations.CheckInt(ch[ch.length-1]) == false) {
-											throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed...");
+											throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed.");
 							    		}
 						    		}
-						    		
 						    	      char[] chars = route.toCharArray();
 						    	      StringBuilder sb = new StringBuilder();
 						    	      for(char c : chars){
 						    	         if(!Character.isDigit(c)){
 						    	            sb.append(c);
 						    	         }
-						    	      }
-						    	      
+						    	      }						    	      
 							    	boolean permission_exists = res.toString().contains(route+"."+method);
 								    boolean permission_exists1 = res.toString().contains(sb.deleteCharAt(sb.length() -1)+"."+method);
 							    	if(permission_exists == true || permission_exists1 == true) {
 							    		return true;
 							    	}else {
-										throw new CustomException("Permission denied...");
+										throw new UnauthorizedException("Permission denied.");
 							    	}
 						    	}
 						    	else if(method.equals("POST")) {
@@ -135,40 +132,33 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 							    	if(permission_exists == true) {
 							    		return true;
 							    	}else {
-										throw new CustomException("Permission denied...");
+										throw new UnauthorizedException("Permission denied.");
 							    	}
 						    	}
 						    	else if(method.equals("PUT")) {
 						    		String[] ch = route.split("/");
-						    		//String req_param = ch[ch.length-1];
-
 						    		if(Inputs_Validations.CheckInt(ch[ch.length-1]) == false) {
-										throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed...");
-						    		}
-						    		
+										throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed.");
+						    		}						    		
 						    	      char[] chars = route.toCharArray();
 						    	      StringBuilder sb = new StringBuilder();
 						    	      for(char c : chars){
 						    	         if(!Character.isDigit(c)){
 						    	            sb.append(c);
 						    	         }
-						    	      }
-						    	      
+						    	      }						    	      
 								    boolean permission_exists = res.toString().contains(sb.deleteCharAt(sb.length() -1)+"."+method);
 							    	if(permission_exists == true) {
 							    		return true;
 							    	}else {
-										throw new CustomException("Permission denied...");
+										throw new UnauthorizedException("Permission denied.");
 							    	}
 						    	}
 						    	else if(method.equals("DELETE")) {
 						    		String[] ch = route.split("/");
-						    		//String req_param = ch[ch.length-1];
-						    		
 						    		if(Inputs_Validations.CheckInt(ch[ch.length-1]) == false) {
-										throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed...");
-						    		}
-						    		
+										throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed.");
+						    		}						    		
 						    	      char[] chars = route.toCharArray();
 						    	      StringBuilder sb = new StringBuilder();
 						    	      for(char c : chars){
@@ -180,41 +170,34 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 							    	if(permission_exists == true) {
 							    		return true;
 							    	}else {
-										throw new CustomException("Permission denied...");
-							    	}
-							    	
+										throw new UnauthorizedException("Permission denied.");
+							    	}							    	
 						    	}else {
-							    	throw new CustomException("Request "+request.getMethod()+" is NOT supported!");
+							    	throw new CustomException("Request "+request.getMethod()+" is NOT supported.");
 						    	}
 							}
 				    	}else {
 				    		// filter by global account
 					    	if(method.equals("GET")) {
 					    		String[] ch = route.split("/");
-					    		//String req_param = ch[ch.length-1];
-
 					    		if(ch[ch.length-2].equals("get")) {
 					    			if( Inputs_Validations.CheckInt(ch[ch.length-1]) == false) {
-										throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed...");
+										throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed.");
 						    		}
 					    		}
-					    		
 					    	    char[] chars = route.toCharArray();
 					    	    StringBuilder sb = new StringBuilder();
 					    	    for(char c : chars){
 					    	       if(!Character.isDigit(c)){
 					    	          sb.append(c);
 					    	       }
-					    	      }
-					    	    //String restOfTheUrl = new AntPathMatcher().extractPathWithinPattern(request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE).toString(),request.getRequestURI());
-					    	    //System.out.println(sb);
-					    	    //System.out.println(route);
+					    	    }
 						    	boolean permission_exists = res.toString().contains(route+"."+method);
 							    boolean permission_exists1 = res.toString().contains(sb.deleteCharAt(sb.length() -1)+"."+method);
 						    	if(permission_exists == true || permission_exists1 == true) {
 						    		return true;
 						    	}else {
-									throw new CustomException("Permission denied...");
+									throw new UnauthorizedException("Permission denied.");
 						    	}
 					    	}
 					    	else if(method.equals("POST")) {
@@ -222,17 +205,14 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 						    	if(permission_exists == true) {
 						    		return true;
 						    	}else {
-									throw new CustomException("Permission denied...");
+									throw new UnauthorizedException("Permission denied.");
 						    	}
 					    	}
 					    	else if(method.equals("PUT")) {
 					    		String[] ch = route.split("/");
-					    		//String req_param = ch[ch.length-1];
-					    		
 					    		if(Inputs_Validations.CheckInt(ch[ch.length-1]) == false) {
-									throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed...");
+									throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed.");
 					    		}
-					    		
 					    	      char[] chars = route.toCharArray();
 					    	      StringBuilder sb = new StringBuilder();
 					    	      for(char c : chars){
@@ -240,20 +220,17 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 					    	            sb.append(c);
 					    	         }
 					    	      }
-					    	      
 							    boolean permission_exists = res.toString().contains(sb.deleteCharAt(sb.length() -1)+"."+method);
 						    	if(permission_exists == true) {
 						    		return true;
 						    	}else {
-									throw new CustomException("Permission denied...");
+									throw new UnauthorizedException("Permission denied.");
 						    	}
 					    	}
 					    	else if(method.equals("DELETE")) {
-					    		String[] ch = route.split("/");
-					    		//String req_param = ch[ch.length-1];
-					    		
+					    		String[] ch = route.split("/");					    		
 					    		if(Inputs_Validations.CheckInt(ch[ch.length-1]) == false) {
-									throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed...");
+									throw new CustomException("Error "+ch[ch.length-1]+", PATH malformed.");
 					    		}
 					    	      char[] chars = route.toCharArray();
 					    	      StringBuilder sb = new StringBuilder();
@@ -266,21 +243,17 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 						    	if(permission_exists == true) {
 						    		return true;
 						    	}else {
-									throw new CustomException("Permission denied...");
+									throw new UnauthorizedException("Permission denied.");
 						    	}
-						    	
 					    	}else {
-						    	throw new CustomException("Request "+request.getMethod()+" is NOT supported!");
+						    	throw new CustomException("Request "+request.getMethod()+" is NOT supported.");
 					    	}
 				    	}
 				    }else {
-						throw new UnauthorizedException("Key error... Invalid credentials!");
+						throw new UnauthorizedException("Invalid API key.");
 				    }
-				        
 				}else {
-					//response.sendError(401, "UNAUTHORIZED");
-					throw new UnauthorizedException("Unauthorized! Key required!");
-					//return true;
+					throw new UnauthorizedException("API key required.");
 				}
 			}else {
 				return true;
@@ -288,31 +261,30 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 		}
 	}
 	
-	
 	public ArrayList<Map<String, String>> checkApiKey(String apikey) throws SQLException {
 		Statement st =null;
 		ResultSet rs = null;
 		ArrayList<Map<String, String>> list = new ArrayList<>();
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); 
-			Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/cloud_management_platform","root",""); 
-			//Connection con=DriverManager.getConnection("jdbc:mysql://143.198.55.254:3306/waelitwi_cloud_management_platform","waelitwi","n9K@c0Xdr!oeiw@1985");
+			//Connection con=DriverManager.getConnection("jdbc:mysql://localhost:3306/cloud_management_platform","root",""); 
+			Connection con=DriverManager.getConnection("jdbc:mysql://143.198.55.254:3306/waelitwi_cloud_management_platform","waelitwi","n9K@c0Xdr!oeiw@1985");
 			st=con.createStatement();  
 			rs=st.executeQuery("SELECT akp.permission,ak.* FROM api_keys ak LEFT JOIN api_keys_permissions akp ON ak.id = akp.apikey_id WHERE ak.key_value = '"+apikey+"' AND ak.status IN (1,2,3) AND (akp.status IN (1,2,3) OR akp.apikey_id IS NULL)");
 			if(rs != null && rs.next()) {
     			ResultSetMetaData md = rs.getMetaData();
     	        int columns = md.getColumnCount();
-    	        	GLOBAL_ACCOUNT = rs.getString("account_id");
-    	        	GLOBAL_APIKEY = rs.getString("id");
-    	        	TYPE = rs.getString("type");
-    	            HashMap<String, String> row = new HashMap<String, String>(columns);
-    	            for (int i = 1; i <= columns; ++i) {
-    	                String columnName = md.getColumnName(i);
-    	                String columnVal = String.valueOf(rs.getObject(i));
-    	                row.put(columnName, columnVal);
-    	            }
-    	            list.add(row);
-    	            con.close();
+    	        GLOBAL_ACCOUNT = rs.getString("account_id");
+    	        GLOBAL_APIKEY = rs.getString("id");
+    	        TYPE = rs.getString("type");
+    	        HashMap<String, String> row = new HashMap<String, String>(columns);
+    	        for (int i = 1; i <= columns; ++i) {
+    	        	String columnName = md.getColumnName(i);
+    	            String columnVal = String.valueOf(rs.getObject(i));
+    	            row.put(columnName, columnVal);
+    	        }
+    	        list.add(row);
+    	        con.close();
     	        return list;
     	        
         	}else {
@@ -324,8 +296,9 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
         		con.close();
         		return null;
         	}
-
-		}catch(Exception e){ System.out.println("e1 "+e);}
+		}catch(Exception e){ 
+			System.out.println(e);
+		}
 		st=null;
 		rs=null;
 		return null;  
@@ -337,16 +310,16 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 		ResultSet rs1 = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); 
-			Connection con1=DriverManager.getConnection("jdbc:mysql://localhost:3306/cloud_management_platform","root",""); 
-			//Connection con1=DriverManager.getConnection("jdbc:mysql://143.198.55.254:3306/waelitwi_cloud_management_platform","waelitwi","n9K@c0Xdr!oeiw@1985");
+			//Connection con1=DriverManager.getConnection("jdbc:mysql://localhost:3306/cloud_management_platform","root",""); 
+			Connection con1=DriverManager.getConnection("jdbc:mysql://143.198.55.254:3306/waelitwi_cloud_management_platform","waelitwi","n9K@c0Xdr!oeiw@1985");
 			st1=con1.createStatement();  
 			rs1=st1.executeQuery("SELECT u.id, u.account_id FROM core_users u INNER JOIN core_users_tokens ut ON u.id = ut.user_id WHERE ut.token='"+apikey+"' AND u.status IN (1,2,3) AND ut.status IN (1,2,3)");
 			if(rs1 != null && rs1.next()) {
-		        	GLOBAL_USER = rs1.getString("id");
-		        	GLOBAL_USER_ACCOUNT = rs1.getString("account_id");
-		        	result = GLOBAL_USER+","+GLOBAL_USER_ACCOUNT;
-		        	con1.close();
-					return result;
+		        GLOBAL_USER = rs1.getString("id");
+		        GLOBAL_USER_ACCOUNT = rs1.getString("account_id");
+		        result = GLOBAL_USER+","+GLOBAL_USER_ACCOUNT;
+		        con1.close();
+				return result;
 	        }else {
 	        	GLOBAL_USER = null;
 	        	GLOBAL_USER_ACCOUNT = null;
@@ -355,8 +328,9 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 	        	con1.close();
 	        	return result;
 	        }
-
-		}catch(Exception e){ System.out.println("e2 "+e);}
+		}catch(Exception e){ 
+			System.out.println(e);
+		}
         st1=null;
         rs1=null;
 		return result;  
@@ -368,22 +342,23 @@ public class BasicAuthInterceptor extends HandlerInterceptorAdapter{
 		ResultSet rs2 = null;
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); 
-			Connection con2=DriverManager.getConnection("jdbc:mysql://localhost:3306/cloud_management_platform","root",""); 
-			//Connection con2=DriverManager.getConnection("jdbc:mysql://143.198.55.254:3306/waelitwi_cloud_management_platform","waelitwi","n9K@c0Xdr!oeiw@1985");
+			//Connection con2=DriverManager.getConnection("jdbc:mysql://localhost:3306/cloud_management_platform","root",""); 
+			Connection con2=DriverManager.getConnection("jdbc:mysql://143.198.55.254:3306/waelitwi_cloud_management_platform","waelitwi","n9K@c0Xdr!oeiw@1985");
 			st2=con2.createStatement();  
 			rs2=st2.executeQuery("SELECT * FROM core_accounts WHERE id='"+account_id+"' AND status IN (1,2,3)");
 	        if(rs2 != null && rs2.next()) {
-	        		result = "Account is active";
-	        		con2.close();
-					return result;
+	        	result = "Account is active";
+	        	con2.close();
+				return result;
 	        }else {
 	            st2=null;
 	            rs2=null;
 	        	con2.close();
 	        	return result;
 	        }
-
-		}catch(Exception e){ System.out.println("e3 "+e);}
+		}catch(Exception e){ 
+			System.out.println(e);
+		}
         st2=null;
         rs2=null;
 		return result;  

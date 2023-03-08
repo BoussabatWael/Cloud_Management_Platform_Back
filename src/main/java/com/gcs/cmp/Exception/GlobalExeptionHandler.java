@@ -11,6 +11,7 @@ import org.springframework.web.client.HttpClientErrorException.MethodNotAllowed;
 
 @ControllerAdvice
 public class GlobalExeptionHandler {
+	
 	@ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ExceptionResponse> resourceNotFound(ResourceNotFoundException ex) {
@@ -65,6 +66,4 @@ public class GlobalExeptionHandler {
 
         return new ResponseEntity<ExceptionResponse>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
-
-    
 }

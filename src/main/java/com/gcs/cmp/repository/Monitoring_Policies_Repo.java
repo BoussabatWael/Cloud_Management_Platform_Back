@@ -11,4 +11,5 @@ public interface Monitoring_Policies_Repo extends JpaRepository<Monitoring_Polic
 
 	@Query(value="SELECT * FROM monitoring_policies WHERE account_id=?1 AND status IN (1,2,3)",nativeQuery=true)
 	public List<Monitoring_Policies> getMonitoring_PoliciesList(Long account_id);
+	
 }

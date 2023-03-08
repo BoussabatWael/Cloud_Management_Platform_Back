@@ -19,7 +19,6 @@ public class Providers_ServiceImpl implements Providers_Service {
 	public Providers addCloud_Providers(Providers Cloud_Providers) {
 		// TODO Auto-generated method stub
 		return cloud_Providers_Repo.save(Cloud_Providers);
-
 	}
 
 	@Override
@@ -48,8 +47,7 @@ public class Providers_ServiceImpl implements Providers_Service {
 			return "Provider "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}	
 	}
-
+	
 }

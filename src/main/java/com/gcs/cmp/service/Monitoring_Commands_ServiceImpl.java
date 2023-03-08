@@ -47,8 +47,7 @@ public class Monitoring_Commands_ServiceImpl implements Monitoring_Commands_Serv
 			return "Monitoring command "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

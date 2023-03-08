@@ -12,4 +12,5 @@ public interface Core_Accounts_Repo extends JpaRepository<Core_Accounts, Long>{
 
 	@Query(value="SELECT * FROM core_accounts WHERE status IN (1,2,3)",nativeQuery=true)
 	public List<Core_Accounts> findCore_AccountsList();
+	
 }

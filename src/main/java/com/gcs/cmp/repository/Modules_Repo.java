@@ -11,4 +11,5 @@ public interface Modules_Repo extends JpaRepository<Modules, Long> {
 
 	@Query(value="SELECT * FROM modules WHERE status IN (1,2,3)",nativeQuery=true)
 	public List<Modules> getModulesList();
+	
 }

@@ -10,4 +10,5 @@ public interface Core_Api_Logs_Service {
 	public List<Core_Api_Logs> getCore_Api_LogsList(Long account_id);
 	public Optional<Core_Api_Logs> findCore_Api_LogsById(Long id) ;
 	public String deleteCore_Api_Logs(Long id) ;
+	
 }

@@ -58,5 +58,5 @@ public class Inventory_Applications_Sources_ServiceImpl implements Inventory_App
 		// TODO Auto-generated method stub
 		return inventory_Applications_Sources_Repo.getApplications_SourcesListByApplicationID(account_id, application_id);
 	}
-
+	
 }

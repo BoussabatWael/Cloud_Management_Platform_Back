@@ -2,9 +2,14 @@ package com.gcs.cmp.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -28,16 +34,22 @@ import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.gcs.cmp.Exception.ResponseHandler;
 import com.gcs.cmp.entity.Api_Keys;
 import com.gcs.cmp.entity.Core_Api_Logs;
-
 import com.gcs.cmp.entity.Providers;
 import com.gcs.cmp.interceptors.BasicAuthInterceptor;
+import com.gcs.cmp.providers.DigitalOcean.DigitalOcean_Service;
+import com.gcs.cmp.providers.OVH.OVH_Service;
+import com.gcs.cmp.providers.Vultr.Vultr_Service;
 import com.gcs.cmp.repository.Api_Keys_Repo;
 import com.gcs.cmp.repository.Core_Api_Logs_Repo;
 
 import com.gcs.cmp.service.Providers_Service;
 import com.gcs.cmp.validators.Inputs_Validations;
+import com.google.gson.Gson;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
+@Tag(name = "Providers", description = "Manage providers")
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/providers")
@@ -47,6 +59,15 @@ public class Provider {
 	private Providers_Service cloud_Providers_Service;
 	
 	@Autowired
+	private Vultr_Service vultr_Service;
+	
+	@Autowired
+	private DigitalOcean_Service digitalOcean_Service;
+	
+	@Autowired
+	private OVH_Service ovh_Service;
+	
+	@Autowired
 	private Core_Api_Logs_Repo core_Api_Logs_Repo;
 	
 	@Autowired
@@ -54,33 +75,34 @@ public class Provider {
 	
 	private HttpMessageNotReadableException ex;
 	
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Object> handleException(HttpMessageNotReadableException exception) {
-        String msg = null;
-        Throwable cause = exception.getCause();
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<Object> handleException(HttpMessageNotReadableException exception) {
+		String msg = null;
+	    Throwable cause = exception.getCause();
 
-        if (cause instanceof JsonParseException) {
-            JsonParseException jpe = (JsonParseException) cause;
-            msg = jpe.getOriginalMessage();
-        }
-        else if (cause instanceof MismatchedInputException) {
-            MismatchedInputException mie = (MismatchedInputException) cause;
-            if (mie.getPath() != null && mie.getPath().size() > 0) {
-                msg = "Invalid request field : " + mie.getPath().get(0).getFieldName();
-            }
-            else {
-                msg = "Invalid request message";
-            }
-        }
-        else if (cause instanceof JsonMappingException) {
-            JsonMappingException jme = (JsonMappingException) cause;
-            msg = jme.getOriginalMessage();
-            if (jme.getPath() != null && jme.getPath().size() > 0) {
-                msg = "Invalid request field : " + jme.getPath().get(0).getFieldName() + ": " + msg;
-            }
-        }
+	    if (cause instanceof JsonParseException) {
+	    	JsonParseException jpe = (JsonParseException) cause;
+	        msg = jpe.getOriginalMessage();
+	    }
+	    else if (cause instanceof MismatchedInputException) {
+	    	MismatchedInputException mie = (MismatchedInputException) cause;
+	        if (mie.getPath() != null && mie.getPath().size() > 0) {
+	        	msg = "Invalid request field : " + mie.getPath().get(0).getFieldName();
+	        }
+	        else {
+	        	msg = "Invalid request message";
+	        }
+	    }
+	    else if (cause instanceof JsonMappingException) {
+	    	JsonMappingException jme = (JsonMappingException) cause;
+	        msg = jme.getOriginalMessage();
+	        if (jme.getPath() != null && jme.getPath().size() > 0) {
+	        	msg = "Invalid request field : " + jme.getPath().get(0).getFieldName() +
+	                      ": " + msg;
+	        }
+	    }
         return ResponseHandler.ResponseBadRequest(msg, HttpStatus.BAD_REQUEST, null);
-    }
+	}
     
 	@GetMapping("")
 	public ResponseEntity<Object> getAllCloud_Providers(){		
@@ -91,6 +113,367 @@ public class Provider {
             return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
 	}
+	
+	@GetMapping("/ovh/domains")
+	public Object domains(){		
+		try {
+			return ovh_Service.getDomainsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/actions")
+	public Object actionsList(){		
+		try {
+			return digitalOcean_Service.getActionsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/applications")
+	public Object appsList(){		
+		try {
+			return digitalOcean_Service.getAppsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/application")
+	public Object getApp(@RequestParam(name="id") String id){		
+		try {
+			return digitalOcean_Service.getExistingApp(id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/customerbalance")
+	public Object customerBalance(){		
+		try {
+			return digitalOcean_Service.getCustomerBalance();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/billinghistory")
+	public Object billingHistory(){		
+		try {
+			return digitalOcean_Service.getBillingHistoryList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/invoices")
+	public Object invoicesList(){		
+		try {
+			return digitalOcean_Service.getInvoicesList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/domain/records")
+	public Object domainrecordslist(@RequestParam(name="domain_name") String domain_name){		
+		try {
+			return digitalOcean_Service.getDomainRecordsList(domain_name);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/domain/record")
+	public Object domainrecord(@RequestParam(name="domain_name") String domain_name, @RequestParam(name="domain_record_id") Long domain_record_id){		
+		try {
+			return digitalOcean_Service.getExistingDomainRecord(domain_name, domain_record_id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/domains")
+	public Object domainslist(){		
+		try {
+			return digitalOcean_Service.getDomainsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/domain")
+	public Object getDomain(@RequestParam(name="domain_name") String domain_name){		
+		try {
+			return digitalOcean_Service.getExistingDomain(domain_name);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/droplet/actions")
+	public Object dropletActions(@RequestParam(name="droplet_id") Long droplet_id){		
+		try {
+			return digitalOcean_Service.getActionsDropletList(droplet_id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/droplets")
+	public Object dropletsList(){		
+		try {
+			return digitalOcean_Service.getDropletsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/droplet")
+	public Object droplet(@RequestParam(name="droplet_id") Long droplet_id){		
+		try {
+			return digitalOcean_Service.getExistingDroplet(droplet_id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/droplet/backups")
+	public Object dropletBackups(@RequestParam(name="droplet_id") Long droplet_id){		
+		try {
+			return digitalOcean_Service.getBackupsDropletList(droplet_id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/droplet/snapshots")
+	public Object dropletSnapshots(@RequestParam(name="droplet_id") Long droplet_id){		
+		try {
+			return digitalOcean_Service.getSnapshotsDropletList(droplet_id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/droplet/firewalls")
+	public Object dropletFirewalls(@RequestParam(name="droplet_id") Long droplet_id){		
+		try {
+			return digitalOcean_Service.getFirewallDropletList(droplet_id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/firewalls")
+	public Object firewalls(){		
+		try {
+			return digitalOcean_Service.getFirewallsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/firewall")
+	public Object firewall(@RequestParam(name="firewall_id") String firewall_id){		
+		try {
+			return digitalOcean_Service.getExistingFirewall(firewall_id);
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/regions")
+	public Object regions(){		
+		try {
+			return digitalOcean_Service.getRegionsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/digitalocean/sizes")
+	public Object sizes(){		
+		try {
+			return digitalOcean_Service.getDropletSizesList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	/*
+	@GetMapping("/vultr/account")
+	public Object accountInfo(){		
+		try {
+			return vultr_Service.getAccountInfo();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/applications")
+	public Object applicationsList(){		
+		try {
+			return vultr_Service.getApplicationList();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/backups")
+	public Object backupsList(){		
+		try {
+			return vultr_Service.getBackupsList();	
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/billinghistory")
+	public Object billingHistoryList(){		
+		try {
+			return vultr_Service.getBillingHistoryList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/invoices")
+	public Object invoicesList(){		
+		try {
+			return vultr_Service.getInvoicesList();				
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/domains")
+	public Object domainsList(){		
+		try {
+			return vultr_Service.getDnsDomainsList();
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/soa")
+	public Object soa(@RequestParam(name="dns_domain") String dns_domain){		
+		try {
+			return vultr_Service.getSoaInformations(dns_domain);							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/dnssec")
+	public Object dnssec(@RequestParam(name="dns_domain") String dns_domain){		
+		try {
+			return vultr_Service.getDnsSecInfo(dns_domain);							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/records")
+	public Object recordsList(@RequestParam(name="dns_domain") String dns_domain){		
+		try {
+			return vultr_Service.getRecordsList(dns_domain);							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/firewallgroups")
+	public Object firewallGroupsList(){		
+		try {
+			return vultr_Service.getFirewallGroupsList();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/firewallrules")
+	public Object firewallRulesList(@RequestParam(name="firewall_group_id") String firewall_group_id){		
+		try {
+			return vultr_Service.getFirewallRulesList(firewall_group_id);							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/instances")
+	public Object instancesList(){		
+		try {
+			return vultr_Service.getInstancesList();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/instance")
+	public Object getInstance(@RequestParam(name="instance_id") String instance_id){		
+		try {
+			return vultr_Service.getInstance(instance_id);							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/ipv4instance")
+	public Object ipv4InstanceList(@RequestParam(name="instance_id") String instance_id){		
+		try {
+			return vultr_Service.getIPv4InstanceInformationList(instance_id);							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/os")
+	public Object osList(){		
+		try {
+			return vultr_Service.getOsList();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/plans")
+	public Object plansList(){		
+		try {
+			return vultr_Service.getPlansList();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/regions")
+	public Object regionsList(){		
+		try {
+			return vultr_Service.getRegionsList();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/plansinregion")
+	public Object availablePlansInRegion(@RequestParam(name="region_id") String region_id){		
+		try {
+			return vultr_Service.getAvailablePlansInRegionList(region_id);							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+	
+	@GetMapping("/vultr/snapshots")
+	public Object snapshotsList(){		
+		try {
+			return vultr_Service.getSnapshotsList();							
+		}catch(Exception e) {
+            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
+        }
+	}
+ 	*/	
 	
 	@PostMapping("/create")
 	public ResponseEntity<Object> addCloud_Providers(@Validated @RequestBody Providers cloud_Providers,Errors errors){	
@@ -104,13 +487,14 @@ public class Provider {
 				cloud_Providers.setStart_date(LocalDateTime.now());
 				Providers result = cloud_Providers_Service.addCloud_Providers(cloud_Providers);
 				if(result != null) {
-					// create logs 
-					// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-					//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-					//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-					//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-					//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-					
+					/*api logs 
+					 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+					 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+					 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+					 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+					 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+					 * api_keys_permissions:49, core_logs:50
+					*/
 					Core_Api_Logs api_logs = new Core_Api_Logs();
 					
 					Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -152,8 +536,7 @@ public class Provider {
 			}catch(Exception e) {
 	            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
 	        }
-		}
-		
+		}		
 	}
 	
 	@PutMapping("/update/{id}")
@@ -224,13 +607,14 @@ public class Provider {
 						cloud_Providers.setId(Long.parseLong(id));
 						Providers result = cloud_Providers_Service.updateCloud_Providers(cloud_Providers);
 						if(result != null) {
-							// create logs 
-							// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-							//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-							//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-							//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-							//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-							
+							/*api logs 
+							 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+							 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+							 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+							 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+							 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+							 * api_keys_permissions:49, core_logs:50
+							*/
 							Core_Api_Logs api_logs = new Core_Api_Logs();
 							
 							Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -272,13 +656,14 @@ public class Provider {
 					}else {
 						String result = cloud_Providers_Service.deleteCloud_Providers(Long.parseLong(id));
 						if(result != null) {
-							// create logs 
-							// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-							//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-							//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-							//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-							//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-							
+							/*api logs 
+							 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+							 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+							 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+							 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+							 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+							 * api_keys_permissions:49, core_logs:50
+							*/
 							Core_Api_Logs api_logs = new Core_Api_Logs();
 							
 							Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -301,7 +686,6 @@ public class Provider {
 	            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
 	        }
 		}
-		
-
 	}
+	
 }

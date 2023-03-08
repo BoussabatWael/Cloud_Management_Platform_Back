@@ -59,8 +59,7 @@ public class ResponseHandler {
                map.put("data", responseObj);
 
                return new ResponseEntity<Object>(map,status);
-       }
-    
+    }
     
     @ResponseStatus(HttpStatus.NOT_FOUND)
    	public static ResponseEntity<Object> ResponseNotFound(String message, HttpStatus status, Object responseObj) {
@@ -70,7 +69,7 @@ public class ResponseHandler {
                map.put("data", responseObj);
 
                return new ResponseEntity<Object>(map,status);
-       }
+    }
     
     @ResponseStatus(HttpStatus.BAD_REQUEST)
    	public static ResponseEntity<Object> ResponseBadRequest(String message, HttpStatus status, Object responseObj) {
@@ -80,14 +79,5 @@ public class ResponseHandler {
                map.put("data", responseObj);
 
                return new ResponseEntity<Object>(map,status);
-       }
-	/*
-	public static Object InputValidationResponse(String message, String code) {
-        Map<String, Object> map = new HashMap<String, Object>();
-            map.put("message", message);
-            map.put("status", code);
-
-            return map;
     }
-    */
 }

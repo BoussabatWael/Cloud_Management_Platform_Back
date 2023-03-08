@@ -18,4 +18,5 @@ public interface Core_Users_Security_Repo extends JpaRepository<Core_Users_Secur
 	
 	@Query(value="SELECT a.* FROM core_users_security a INNER JOIN core_users b ON a.user_id = b.id WHERE a.status IN (1,2,3) AND a.login=?1 AND b.status IN (1,2,3)",nativeQuery=true)
 	public Optional<Core_Users_Security> getUsersSecurityByLogin(String login);
+	
 }

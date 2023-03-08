@@ -13,4 +13,5 @@ public interface Core_Categories_Service {
 	public Core_Categories updateCore_Categories(Core_Categories core_Categories);
 	public Optional<Core_Categories> findCore_CategoriesById(Long id) ;
 	public String deleteCore_Categories(Long id) ;
+	
 }

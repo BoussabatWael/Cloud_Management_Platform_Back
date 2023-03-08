@@ -49,8 +49,7 @@ public class Monitoring_Policies_Servers_ServiceImpl implements Monitoring_Polic
 			return "Monitoring policies server "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

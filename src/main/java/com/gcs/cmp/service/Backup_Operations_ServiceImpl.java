@@ -47,14 +47,12 @@ public class Backup_Operations_ServiceImpl implements Backup_Operations_Service{
 		}catch(Exception e) {
 			return null;
 		}
-	
 	}
 
 	@Override
 	public List<Backup_Operations> getBackup_OperationsByInstanceID(Long account_id, Long instance_id) {
 		// TODO Auto-generated method stub
 		return backup_Operations_Repo.getBackup_OperationsByInstanceID(account_id, instance_id);
-	}
-
+	}	
 	
 }

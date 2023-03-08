@@ -14,4 +14,5 @@ public interface Networks_SSL_Certificates_Repo extends JpaRepository<Networks_S
 	
 	@Query(value="SELECT a.* FROM networks_ssl_certificates a INNER JOIN networks_domain_names b ON a.domain_id=b.id WHERE a.domain_id=?2 AND a.status IN (1,2,3) AND b.account_id=?1 AND b.status IN (1,2,3)",nativeQuery=true)
 	public List<Networks_SSL_Certificates> getDomainNetworks_SSL_CertificatesList(Long account_id, Long domain_name_id);
+	
 }

@@ -11,4 +11,5 @@ public interface Backup_Settings_Repo extends JpaRepository<Backup_Settings, Lon
 
 	@Query(value="select * from backup_settings where account_id=?1",nativeQuery=true)
 	public List<Backup_Settings> findBackup_SettingsList(Long account_id);
+	
 }

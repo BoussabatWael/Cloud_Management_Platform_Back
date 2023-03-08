@@ -50,8 +50,6 @@ public class Inventory_Servers_Versions_ServiceImpl implements Inventory_Servers
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
-
+	
 }

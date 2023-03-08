@@ -47,11 +47,9 @@ public class Inventory_Applications_Versions_ServiceImpl implements Inventory_Ap
 			// TODO Auto-generated method stub
 			inventory_Applications_Versions_Repo.deleteById(id);
 			return "Application version "+id+" has been deleted!";
-
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
 
 	@Override
@@ -60,5 +58,5 @@ public class Inventory_Applications_Versions_ServiceImpl implements Inventory_Ap
 		// TODO Auto-generated method stub
 		return inventory_Applications_Versions_Repo.getApplications_VersionsListByApplicationID(account_id, application_id);
 	}
-
+	
 }

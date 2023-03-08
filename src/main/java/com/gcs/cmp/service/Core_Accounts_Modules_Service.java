@@ -13,4 +13,5 @@ public interface Core_Accounts_Modules_Service {
 	public Core_Accounts_Modules updateCore_Accounts_Modules(Core_Accounts_Modules Core_Accounts_Modules);
 	public Optional<Core_Accounts_Modules> findCore_Accounts_ModulesById(Long id) ;
 	public String deleteCore_Accounts_Modules(Long id) ;
+	
 }

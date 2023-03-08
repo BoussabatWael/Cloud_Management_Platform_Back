@@ -48,8 +48,6 @@ public class Inventory_Instances_ServiceImpl implements Inventory_Instances_Serv
 		}catch(Exception e) {
 			return null;
 		}
-		
-
 	}
 
 	@Override
@@ -63,5 +61,5 @@ public class Inventory_Instances_ServiceImpl implements Inventory_Instances_Serv
 		// TODO Auto-generated method stub
 		return inventory_Instances_Repo.getAllInstancesNumber(account_id);
 	}
-
+	
 }

@@ -10,4 +10,5 @@ public interface Monitoring_Automations_Repo extends JpaRepository<Monitoring_Au
 	
 	@Query(value="SELECT * FROM monitoring_automations WHERE account_id=?1 AND status IN (1,2,3)",nativeQuery=true)
 	public List<Monitoring_Automations> getMonitoring_AutomationsList(Long account_id);
+	
 }

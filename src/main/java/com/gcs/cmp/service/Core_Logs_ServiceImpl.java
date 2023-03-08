@@ -63,8 +63,7 @@ public class Core_Logs_ServiceImpl implements Core_Logs_Service{
 		// TODO Auto-generated method stub
 		return core_Logs_Repo.getServerLogsList(account_id, server_id);
 	}
-	
-	
+		
 	@Override
 	public List<Core_Logs> getDomainNamesLogsList(Long account_id, Long domain_id) {
 		// TODO Auto-generated method stub
@@ -82,4 +81,5 @@ public class Core_Logs_ServiceImpl implements Core_Logs_Service{
 		// TODO Auto-generated method stub
 		return core_Logs_Repo.getBackupLogsList(account_id, backup_id);
 	}
+	
 }

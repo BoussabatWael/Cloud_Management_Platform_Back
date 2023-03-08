@@ -12,4 +12,5 @@ public interface Core_Categories_Repo extends JpaRepository<Core_Categories, Lon
 
 	@Query(value="select * from core_categories where status IN (1,2,3) AND account_id=?1",nativeQuery=true)
 	public List<Core_Categories> findCore_CategoriesList(Long account_id);
+	
 }

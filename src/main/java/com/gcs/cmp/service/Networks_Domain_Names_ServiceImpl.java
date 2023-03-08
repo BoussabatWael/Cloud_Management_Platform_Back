@@ -47,8 +47,7 @@ public class Networks_Domain_Names_ServiceImpl implements Networks_Domain_Names_
 			return "Domain name "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
 
 	@Override
@@ -56,5 +55,5 @@ public class Networks_Domain_Names_ServiceImpl implements Networks_Domain_Names_
 		// TODO Auto-generated method stub
 		return networks_Domain_Names_Repo.getNetworks_Sub_Domains_List(account_id, parent_id);
 	}
-
+	
 }

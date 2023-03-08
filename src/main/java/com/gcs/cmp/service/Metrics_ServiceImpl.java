@@ -14,6 +14,7 @@ public class Metrics_ServiceImpl implements Metrics_Service{
 
 	@Autowired
 	private Metrics_Repo metrics_Repo;
+	
 	@Override
 	public Metrics addMetrics(Metrics metrics) {
 		// TODO Auto-generated method stub
@@ -46,8 +47,7 @@ public class Metrics_ServiceImpl implements Metrics_Service{
 			return "Metric "+id+" has been deleted!";
 		}catch(Exception e) {
 			return null;
-		}
-		
+		}		
 	}
-
+	
 }

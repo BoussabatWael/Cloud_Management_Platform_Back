@@ -36,8 +36,10 @@ import com.gcs.cmp.repository.Core_Users_Repo;
 import com.gcs.cmp.service.Core_Users_Security_Service;
 import com.gcs.cmp.validators.Inputs_Validations;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
+@Tag(name = "Security", description = "Manage users security")
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("/core/users/security")
@@ -57,39 +59,34 @@ public class CoreUsersSecurity {
 	
 	private HttpMessageNotReadableException ex;
 	
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Object> handleException(HttpMessageNotReadableException exception) {
-        String msg = null;
-        Throwable cause = exception.getCause();
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<Object> handleException(HttpMessageNotReadableException exception) {
+		String msg = null;
+	    Throwable cause = exception.getCause();
 
-        if (cause instanceof JsonParseException) {
-            JsonParseException jpe = (JsonParseException) cause;
-            msg = jpe.getOriginalMessage();
-        }
-
-        // special case of JsonMappingException below, too much class detail in error messages
-        else if (cause instanceof MismatchedInputException) {
-            MismatchedInputException mie = (MismatchedInputException) cause;
-            if (mie.getPath() != null && mie.getPath().size() > 0) {
-                msg = "Invalid request field : " + mie.getPath().get(0).getFieldName();
-            }
-
-            // just in case, haven't seen this condition
-            else {
-                msg = "Invalid request message";
-            }
-        }
-
-        else if (cause instanceof JsonMappingException) {
-            JsonMappingException jme = (JsonMappingException) cause;
-            msg = jme.getOriginalMessage();
-            if (jme.getPath() != null && jme.getPath().size() > 0) {
-                msg = "Invalid request field : " + jme.getPath().get(0).getFieldName() +
-                      ": " + msg;
-            }
-        }
+	    if (cause instanceof JsonParseException) {
+	    	JsonParseException jpe = (JsonParseException) cause;
+	        msg = jpe.getOriginalMessage();
+	    }
+	    else if (cause instanceof MismatchedInputException) {
+	    	MismatchedInputException mie = (MismatchedInputException) cause;
+	        if (mie.getPath() != null && mie.getPath().size() > 0) {
+	        	msg = "Invalid request field : " + mie.getPath().get(0).getFieldName();
+	        }
+	        else {
+	        	msg = "Invalid request message";
+	        }
+	    }
+	    else if (cause instanceof JsonMappingException) {
+	    	JsonMappingException jme = (JsonMappingException) cause;
+	        msg = jme.getOriginalMessage();
+	        if (jme.getPath() != null && jme.getPath().size() > 0) {
+	        	msg = "Invalid request field : " + jme.getPath().get(0).getFieldName() +
+	                      ": " + msg;
+	        }
+	    }
         return ResponseHandler.ResponseBadRequest(msg, HttpStatus.BAD_REQUEST, null);
-    }
+	}
     
 	@GetMapping("")
 	public ResponseEntity<Object> getAllCore_Users_Security(){	
@@ -142,13 +139,14 @@ public class CoreUsersSecurity {
 								core_Users_Security.setPassword(Inputs_Validations.encrypt(core_Users_Security.getPassword()));
 								Core_Users_Security result = core_Users_Security_Service.addCore_Users_Security(core_Users_Security);	
 								if(result != null) {
-									// create logs 
-									// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-									//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-									//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-									//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-									//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-									
+									/*api logs 
+									 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+									 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+									 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+									 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+									 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+									 * api_keys_permissions:49, core_logs:50
+									*/
 									Core_Api_Logs api_logs = new Core_Api_Logs();
 									
 									Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -173,13 +171,14 @@ public class CoreUsersSecurity {
 								core_Users_Security.setUser(user.get());
 								Core_Users_Security result = core_Users_Security_Service.addCore_Users_Security(core_Users_Security);	
 								if(result != null) {
-									// create logs 
-									// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-									//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-									//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-									//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-									//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-									
+									/*api logs 
+									 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+									 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+									 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+									 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+									 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+									 * api_keys_permissions:49, core_logs:50
+									*/
 									Core_Api_Logs api_logs = new Core_Api_Logs();
 									
 									Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -295,7 +294,6 @@ public class CoreUsersSecurity {
 				if(result.equals(Optional.empty())) {
 					return ResponseHandler.ResponseOk("Successfully retrieved data!", HttpStatus.OK, null);
 				}else {
-					//result.get().setPassword(Inputs_Validations.decrypt(result.get().getPassword()));
 					return ResponseHandler.ResponseOk("Successfully retrieved data!", HttpStatus.OK, result);
 				}
 			}catch(Exception e) {
@@ -324,7 +322,6 @@ public class CoreUsersSecurity {
 				}else if(user_security.get().getUser() == null) {
 			        return ResponseHandler.ResponseBadRequest("Your request was malformed! Foreign key required!", HttpStatus.BAD_REQUEST, null);
 				}else {
-					//DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"); 
 
 					core_Users_Security.setUser(user_security.get().getUser());
 					core_Users_Security.setStart_date(user_security.get().getStart_date());
@@ -361,13 +358,14 @@ public class CoreUsersSecurity {
 								core_Users_Security.setId(Long.parseLong(id));
 								Core_Users_Security result = core_Users_Security_Service.updateCore_Users_Security(core_Users_Security);
 								if(result != null) {
-									// create logs 
-									// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-									//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-									//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-									//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-									//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-									
+									/*api logs 
+									 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+									 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+									 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+									 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+									 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+									 * api_keys_permissions:49, core_logs:50
+									*/
 									Core_Api_Logs api_logs = new Core_Api_Logs();
 									
 									Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -400,13 +398,14 @@ public class CoreUsersSecurity {
 								core_Users_Security.setId(Long.parseLong(id));
 								Core_Users_Security result = core_Users_Security_Service.updateCore_Users_Security(core_Users_Security);
 								if(result != null) {
-									// create logs 
-									// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-									//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-									//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-									//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-									//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-									
+									/*api logs 
+									 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+									 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+									 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+									 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+									 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+									 * api_keys_permissions:49, core_logs:50
+									*/
 									Core_Api_Logs api_logs = new Core_Api_Logs();
 									
 									Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -458,13 +457,14 @@ public class CoreUsersSecurity {
 							}else {
 								String result = core_Users_Security_Service.deleteCore_Users_Security(Long.parseLong(id));
 								if(result != null) {
-									// create logs 
-									// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-									//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-									//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-									//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-									//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-									
+									/*api logs 
+									 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+									 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+									 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+									 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+									 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+									 * api_keys_permissions:49, core_logs:50
+									*/
 									Core_Api_Logs api_logs = new Core_Api_Logs();
 									
 									Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -491,13 +491,14 @@ public class CoreUsersSecurity {
 							}else {
 								String result = core_Users_Security_Service.deleteCore_Users_Security(Long.parseLong(id));
 								if(result != null) {
-									// create logs 
-									// backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
-									//core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
-									//Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
-									//Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38
-									//monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46
-									
+									/*api logs 
+									 * backup_executions:1,backup_instances:2,backup_operations:3,backup_settings:4,cloud_providers_account:5,core_access_credentials:6,core_accounts_modules:7,core_accounts:8,core_categories_elements:9,core_categories:10,
+									 * core_logs:11,core_notes:12,core_notifications:13,core_urls:14,core_users_instances:15,core_users_metrics:16,core_users_modules:17,core_users_permissions:18,core_users_security:19,core_users_tokens:20,core_users:21,
+									 * Inventory_applications_dependencies:22,Inventory_applications_instances:23,Inventory_applications_sources:24,Inventory_applications_versions:25,Inventory_applications:26,Inventory_hosts:27,Inventory_instances:28,
+									 * Inventory_servers_versions:29,Inventory_servers:30,Inventory_templates_apps:31,Inventory_templates:32,metrics:33,modules:34,monitoring_automations:35,monitoring_commands_executions:36,monitoring_commands:37,monitoring_metrics:38,
+									 * monitoring_policies_alerts:39,monitoring_policies_servers:40,monitoring_policies:41,monitoring_settings:42,networks_domain_names:43,networks_hosts:44,networks_ssl_certificates:45,providers:46,app_api_key:47,api_key:48,
+									 * api_keys_permissions:49, core_logs:50
+									*/
 									Core_Api_Logs api_logs = new Core_Api_Logs();
 									
 									Api_Keys api_key = api_Keys_Repo.findById(Long.parseLong(BasicAuthInterceptor.GLOBAL_APIKEY)).get();
@@ -524,7 +525,7 @@ public class CoreUsersSecurity {
 			}catch (Exception e) {
 	            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS,null);
 	        }
-		}
-		
+		}		
 	}
+	
 }

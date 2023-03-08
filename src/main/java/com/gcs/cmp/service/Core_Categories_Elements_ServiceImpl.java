@@ -49,4 +49,5 @@ public class Core_Categories_Elements_ServiceImpl implements Core_Categories_Ele
 			return null;
 		}	
 	}
+	
 }

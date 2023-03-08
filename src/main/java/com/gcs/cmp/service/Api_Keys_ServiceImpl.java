@@ -15,7 +15,6 @@ public class Api_Keys_ServiceImpl implements Api_Keys_Service{
 	@Autowired
 	private Api_Keys_Repo api_Keys_Repo;
 	
-	
 	@Override
 	public Api_Keys addApi_Keys(Api_Keys api_Keys) {
 		return api_Keys_Repo.save(api_Keys);
@@ -38,7 +37,6 @@ public class Api_Keys_ServiceImpl implements Api_Keys_Service{
 		// TODO Auto-generated method stub
 		return api_Keys_Repo.findById(id);
 	}
-	
 
 	@Override
 	public String deleteApi_Keys(Long id) {
