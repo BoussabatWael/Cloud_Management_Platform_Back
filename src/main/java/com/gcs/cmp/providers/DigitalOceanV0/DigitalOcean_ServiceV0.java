@@ -1,9 +1,9 @@
-package com.gcs.cmp.providers.DigitalOcean;
+package com.gcs.cmp.providers.DigitalOceanV0;
 
 import java.sql.SQLException;
 
 
-public interface DigitalOcean_Service {
+public interface DigitalOcean_ServiceV0 {
 
 	public Object getActionsList() throws SQLException;
 	public Object getAppsList() throws SQLException;

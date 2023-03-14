@@ -1,4 +1,4 @@
-package com.gcs.cmp.providers.DigitalOcean;
+package com.gcs.cmp.providers.DigitalOceanV0;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,47 +21,18 @@ import com.gcs.cmp.providers.Provider;
 import com.google.gson.Gson;
 
 @Service
-public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
+public class DigitalOcean_ServiceImplV0 implements DigitalOcean_ServiceV0{
 
 	RestTemplate restTemplate  = new RestTemplate();
 
 	@Override
 	public Object getActionsList() throws SQLException {
-		/*
-    	String url = "https://api.digitalocean.com/v2/actions";   	
-    	if (BasicAuthInterceptor.authHeader != null && BasicAuthInterceptor.authHeader != "undefined" && BasicAuthInterceptor.authHeader.toLowerCase().startsWith("bearer")) {
-	    	HttpHeaders header = new HttpHeaders();
-	    	header.add("Authorization", BasicAuthInterceptor.authHeader);
-	        header.setContentType(MediaType.APPLICATION_JSON);
-	    	HttpEntity<Object> entity = new HttpEntity<>(header);
-			try {			    
-				ResponseEntity<Object> result = this.restTemplate.exchange(url,HttpMethod.GET,entity,Object.class);		
-				Object res = result.getBody();					
-					if(res != null) {
-						Gson gson = new Gson();					
-						String js = gson.toJson(res);
-						if(js.contains("actions")) {
-							JSONObject jsonObj = new JSONObject(js);								
-							JSONArray actions = jsonObj.getJSONArray("actions");
-							return ResponseHandler.ResponseListOk("Successfully retrieved data.", actions.length(), HttpStatus.OK, actions.toList());
-						}else {
-							return ResponseHandler.ResponseListOk("Emtpy result.", 0, HttpStatus.OK, new ArrayList<>());
-						}
-					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
-					}			
-			}catch(Exception e) {
-				return ResponseHandler.ResponseOk(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-			}
-    	}else {
-			return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
-    	}
-		*/
 		
+    	String url = "https://api.digitalocean.com/v2/actions";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/actions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -80,10 +51,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Emtpy result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -91,7 +62,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/actions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -110,10 +80,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Emtpy result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -125,41 +95,12 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 
 	@Override
 	public Object getAppsList() throws SQLException {
-		/*
-    	String url = "https://api.digitalocean.com/v2/apps";
-    	if (BasicAuthInterceptor.authHeader != null && BasicAuthInterceptor.authHeader != "undefined" && BasicAuthInterceptor.authHeader.toLowerCase().startsWith("bearer")) {
-	    	HttpHeaders header = new HttpHeaders();
-	    	header.add("Authorization", BasicAuthInterceptor.authHeader);
-	        header.setContentType(MediaType.APPLICATION_JSON);
-	    	HttpEntity<Object> entity = new HttpEntity<>(header);
-			try {			    
-				ResponseEntity<Object> result = this.restTemplate.exchange(url,HttpMethod.GET,entity,Object.class);		
-				Object res = result.getBody();					
-					if(res != null) {
-						Gson gson = new Gson();					
-						String js = gson.toJson(res);
-						if(js.contains("apps")) {
-							JSONObject jsonObj = new JSONObject(js);								
-							JSONArray applicationsList = jsonObj.getJSONArray("apps");
-							return ResponseHandler.ResponseListOk("Successfully retrieved data.", applicationsList.length(), HttpStatus.OK, applicationsList.toList());	
-						}else {
-							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
-						}	
-					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
-					}	
-			}catch(Exception e) {
-				return ResponseHandler.ResponseOk(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-			}
-    	}else {
-			return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
-    	}
-    	*/
 		
+    	String url = "https://api.digitalocean.com/v2/apps";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/apps";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -178,10 +119,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -189,7 +130,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/apps";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -208,10 +148,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -223,37 +163,12 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 
 	@Override
 	public Object getExistingApp(String id) throws SQLException {
-		/*
+
     	String url = "https://api.digitalocean.com/v2/apps/"+id;
-    	if (BasicAuthInterceptor.authHeader != null && BasicAuthInterceptor.authHeader != "undefined" && BasicAuthInterceptor.authHeader.toLowerCase().startsWith("bearer")) {
-	    	HttpHeaders header = new HttpHeaders();
-	    	header.add("Authorization", BasicAuthInterceptor.authHeader);
-	        header.setContentType(MediaType.APPLICATION_JSON);
-	    	HttpEntity<Object> entity = new HttpEntity<>(header);
-			try {			    
-				ResponseEntity<Object> result = this.restTemplate.exchange(url,HttpMethod.GET,entity,Object.class);		
-				Object res = result.getBody();					
-				Gson gson = new Gson();					
-				String js = gson.toJson(res);
-				if(js.contains("app")) {
-					JSONObject jsonObj = new JSONObject(js);	
-					Map<String, Object> app = jsonObj.getJSONObject("app").toMap();				
-					return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, app);
-				}else {
-					return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
-				}			
-			}catch(Exception e) {
-				return ResponseHandler.ResponseOk(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-			}
-    	}else {
-			return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
-    	}
-    	*/
-		
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/apps/"+id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -267,15 +182,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("app")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> app = jsonObj.getJSONObject("app").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, app);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", app.size(), HttpStatus.OK, app);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -283,7 +198,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/apps/"+id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -297,15 +211,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("app")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> app = jsonObj.getJSONObject("app").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, app);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", app.size(), HttpStatus.OK, app);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.UNAUTHORIZED, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.UNAUTHORIZED, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -318,10 +232,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getCustomerBalance() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/customers/my/balance";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/customers/my/balance";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -333,12 +248,12 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						Gson gson = new Gson();					
 						String js = gson.toJson(res);
 						Map<String, Object> customerBalance = new JSONObject(js).toMap();
-						return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, customerBalance);
+						return ResponseHandler.ResponseListOk("Successfully retrieved data.", customerBalance.size(), HttpStatus.OK, customerBalance);
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -346,7 +261,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/customers/my/balance";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -358,12 +272,12 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						Gson gson = new Gson();					
 						String js = gson.toJson(res);
 						Map<String, Object> customerBalance = new JSONObject(js).toMap();
-						return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, customerBalance);
+						return ResponseHandler.ResponseListOk("Successfully retrieved data.", customerBalance.size(), HttpStatus.OK, customerBalance);
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -376,10 +290,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getBillingHistoryList() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/customers/my/billing_history";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/customers/my/billing_history";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -398,10 +313,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -409,7 +324,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/customers/my/billing_history";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -428,10 +342,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -444,10 +358,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getInvoicesList() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/customers/my/invoices";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/customers/my/invoices";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -466,10 +381,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());		
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -477,7 +392,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/customers/my/invoices";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -496,10 +410,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());		
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}		
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -512,10 +426,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getDomainRecordsList(String domain_name) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name+"/records";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name+"/records";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -534,10 +449,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -545,7 +460,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name+"/records";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -564,10 +478,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -580,10 +494,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getExistingDomainRecord(String domain_name, Long domain_record_id) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name+"/records/"+domain_record_id;
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name+"/records/"+domain_record_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -597,15 +512,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("domain_record")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> domain_record = jsonObj.getJSONObject("domain_record").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, domain_record);	
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", domain_record.size(), HttpStatus.OK, domain_record);	
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);	
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -613,7 +528,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name+"/records/"+domain_record_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -627,15 +541,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("domain_record")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> domain_record = jsonObj.getJSONObject("domain_record").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, domain_record);	
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", domain_record.size(), HttpStatus.OK, domain_record);	
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);	
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -648,10 +562,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getDomainsList() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/domains";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -670,10 +585,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -681,7 +596,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -700,10 +614,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -716,10 +630,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getExistingDomain(String domain_name) throws SQLException {
 		
+    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name;
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -733,15 +648,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("domain")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> domain = jsonObj.getJSONObject("domain").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, domain);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", domain.size(), HttpStatus.OK, domain);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -749,7 +664,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/domains/"+domain_name;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -763,15 +677,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("domain")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> domain = jsonObj.getJSONObject("domain").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, domain);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", domain.size(), HttpStatus.OK, domain);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -784,10 +698,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getActionsDropletList(Long droplet_id) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/actions";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/actions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -806,10 +721,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -817,7 +732,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/actions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -836,10 +750,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.UNAUTHORIZED, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -852,10 +766,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getDropletsList() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/droplets";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -874,10 +789,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());		
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -885,7 +800,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -904,10 +818,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());		
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -920,10 +834,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getExistingDroplet(Long droplet_id) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id;
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -937,15 +852,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("droplet")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> droplets = jsonObj.getJSONObject("droplet").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, droplets);	
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", droplets.size(), HttpStatus.OK, droplets);	
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);	
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -953,7 +868,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -967,15 +881,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("droplet")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> droplets = jsonObj.getJSONObject("droplet").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, droplets);	
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", droplets.size(), HttpStatus.OK, droplets);	
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);	
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -988,10 +902,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getBackupsDropletList(Long droplet_id) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/backups";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/backups";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1010,10 +925,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1021,7 +936,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/backups";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1040,10 +954,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1056,10 +970,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getSnapshotsDropletList(Long droplet_id) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/snapshots";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/snapshots";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1078,10 +993,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1089,7 +1004,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/snapshots";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1108,10 +1022,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1124,10 +1038,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getFirewallDropletList(Long droplet_id) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/firewalls";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/firewalls";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1146,10 +1061,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1157,7 +1072,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/droplets/"+droplet_id+"/firewalls";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1176,10 +1090,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());	
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1192,10 +1106,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getFirewallsList() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/firewalls";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/firewalls";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1214,10 +1129,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1225,7 +1140,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/firewalls";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1244,10 +1158,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1260,10 +1174,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getExistingFirewall(String firewall_id) throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/firewalls/"+firewall_id;
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/firewalls/"+firewall_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1277,15 +1192,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("firewall")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> firewall = jsonObj.getJSONObject("firewall").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, firewall);	
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", firewall.size(), HttpStatus.OK, firewall);	
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);	
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1293,7 +1208,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/firewalls/"+firewall_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1307,15 +1221,15 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 						if(js.contains("firewall")) {
 							JSONObject jsonObj = new JSONObject(js);	
 							Map<String, Object> firewall = jsonObj.getJSONObject("firewall").toMap();				
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, firewall);	
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", firewall.size(), HttpStatus.OK, firewall);	
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);	
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);	
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1328,10 +1242,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getRegionsList() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/regions";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/regions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1350,10 +1265,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1361,7 +1276,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/regions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1380,10 +1294,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1396,10 +1310,11 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 	@Override
 	public Object getDropletSizesList() throws SQLException {
 
+    	String url = "https://api.digitalocean.com/v2/sizes";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/sizes";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1418,10 +1333,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1429,7 +1344,6 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.digitalocean.com/v2/sizes";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1448,10 +1362,10 @@ public class DigitalOcean_ServiceImpl implements DigitalOcean_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);

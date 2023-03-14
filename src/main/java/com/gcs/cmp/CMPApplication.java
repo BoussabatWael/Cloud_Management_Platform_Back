@@ -24,7 +24,6 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 	        security = {@SecurityRequirement(name = "Basic Auth"),@SecurityRequirement(name = "Token")}
 		)
 public class CMPApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(CMPApplication.class, args);
 	}

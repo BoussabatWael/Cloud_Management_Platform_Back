@@ -2,14 +2,9 @@ package com.gcs.cmp.controller;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.core.JsonParseException;
@@ -36,15 +30,11 @@ import com.gcs.cmp.entity.Api_Keys;
 import com.gcs.cmp.entity.Core_Api_Logs;
 import com.gcs.cmp.entity.Providers;
 import com.gcs.cmp.interceptors.BasicAuthInterceptor;
-import com.gcs.cmp.providers.DigitalOcean.DigitalOcean_Service;
-import com.gcs.cmp.providers.OVH.OVH_Service;
-import com.gcs.cmp.providers.Vultr.Vultr_Service;
 import com.gcs.cmp.repository.Api_Keys_Repo;
 import com.gcs.cmp.repository.Core_Api_Logs_Repo;
 
 import com.gcs.cmp.service.Providers_Service;
 import com.gcs.cmp.validators.Inputs_Validations;
-import com.google.gson.Gson;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -57,16 +47,19 @@ public class Provider {
 
 	@Autowired
 	private Providers_Service cloud_Providers_Service;
+	/*
+	@Autowired
+	private Vultr_ServiceV0 vultr_Service;
 	
 	@Autowired
-	private Vultr_Service vultr_Service;
+	private DigitalOcean_ServiceV0 digitalOcean_Service;
 	
 	@Autowired
-	private DigitalOcean_Service digitalOcean_Service;
+	private Hetzner_ServiceV0 hetzner_Service;
 	
 	@Autowired
-	private OVH_Service ovh_Service;
-	
+	private OVH_ServiceV0 ovh_Service;
+	*/
 	@Autowired
 	private Core_Api_Logs_Repo core_Api_Logs_Repo;
 	
@@ -113,368 +106,7 @@ public class Provider {
             return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
         }
 	}
-	
-	@GetMapping("/ovh/domains")
-	public Object domains(){		
-		try {
-			return ovh_Service.getDomainsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/actions")
-	public Object actionsList(){		
-		try {
-			return digitalOcean_Service.getActionsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/applications")
-	public Object appsList(){		
-		try {
-			return digitalOcean_Service.getAppsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/application")
-	public Object getApp(@RequestParam(name="id") String id){		
-		try {
-			return digitalOcean_Service.getExistingApp(id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/customerbalance")
-	public Object customerBalance(){		
-		try {
-			return digitalOcean_Service.getCustomerBalance();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/billinghistory")
-	public Object billingHistory(){		
-		try {
-			return digitalOcean_Service.getBillingHistoryList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/invoices")
-	public Object invoicesList(){		
-		try {
-			return digitalOcean_Service.getInvoicesList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/domain/records")
-	public Object domainrecordslist(@RequestParam(name="domain_name") String domain_name){		
-		try {
-			return digitalOcean_Service.getDomainRecordsList(domain_name);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/domain/record")
-	public Object domainrecord(@RequestParam(name="domain_name") String domain_name, @RequestParam(name="domain_record_id") Long domain_record_id){		
-		try {
-			return digitalOcean_Service.getExistingDomainRecord(domain_name, domain_record_id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/domains")
-	public Object domainslist(){		
-		try {
-			return digitalOcean_Service.getDomainsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/domain")
-	public Object getDomain(@RequestParam(name="domain_name") String domain_name){		
-		try {
-			return digitalOcean_Service.getExistingDomain(domain_name);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/droplet/actions")
-	public Object dropletActions(@RequestParam(name="droplet_id") Long droplet_id){		
-		try {
-			return digitalOcean_Service.getActionsDropletList(droplet_id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/droplets")
-	public Object dropletsList(){		
-		try {
-			return digitalOcean_Service.getDropletsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/droplet")
-	public Object droplet(@RequestParam(name="droplet_id") Long droplet_id){		
-		try {
-			return digitalOcean_Service.getExistingDroplet(droplet_id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/droplet/backups")
-	public Object dropletBackups(@RequestParam(name="droplet_id") Long droplet_id){		
-		try {
-			return digitalOcean_Service.getBackupsDropletList(droplet_id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/droplet/snapshots")
-	public Object dropletSnapshots(@RequestParam(name="droplet_id") Long droplet_id){		
-		try {
-			return digitalOcean_Service.getSnapshotsDropletList(droplet_id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/droplet/firewalls")
-	public Object dropletFirewalls(@RequestParam(name="droplet_id") Long droplet_id){		
-		try {
-			return digitalOcean_Service.getFirewallDropletList(droplet_id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/firewalls")
-	public Object firewalls(){		
-		try {
-			return digitalOcean_Service.getFirewallsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/firewall")
-	public Object firewall(@RequestParam(name="firewall_id") String firewall_id){		
-		try {
-			return digitalOcean_Service.getExistingFirewall(firewall_id);
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/regions")
-	public Object regions(){		
-		try {
-			return digitalOcean_Service.getRegionsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/digitalocean/sizes")
-	public Object sizes(){		
-		try {
-			return digitalOcean_Service.getDropletSizesList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	/*
-	@GetMapping("/vultr/account")
-	public Object accountInfo(){		
-		try {
-			return vultr_Service.getAccountInfo();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/applications")
-	public Object applicationsList(){		
-		try {
-			return vultr_Service.getApplicationList();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/backups")
-	public Object backupsList(){		
-		try {
-			return vultr_Service.getBackupsList();	
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/billinghistory")
-	public Object billingHistoryList(){		
-		try {
-			return vultr_Service.getBillingHistoryList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/invoices")
-	public Object invoicesList(){		
-		try {
-			return vultr_Service.getInvoicesList();				
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/domains")
-	public Object domainsList(){		
-		try {
-			return vultr_Service.getDnsDomainsList();
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/soa")
-	public Object soa(@RequestParam(name="dns_domain") String dns_domain){		
-		try {
-			return vultr_Service.getSoaInformations(dns_domain);							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/dnssec")
-	public Object dnssec(@RequestParam(name="dns_domain") String dns_domain){		
-		try {
-			return vultr_Service.getDnsSecInfo(dns_domain);							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/records")
-	public Object recordsList(@RequestParam(name="dns_domain") String dns_domain){		
-		try {
-			return vultr_Service.getRecordsList(dns_domain);							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/firewallgroups")
-	public Object firewallGroupsList(){		
-		try {
-			return vultr_Service.getFirewallGroupsList();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/firewallrules")
-	public Object firewallRulesList(@RequestParam(name="firewall_group_id") String firewall_group_id){		
-		try {
-			return vultr_Service.getFirewallRulesList(firewall_group_id);							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/instances")
-	public Object instancesList(){		
-		try {
-			return vultr_Service.getInstancesList();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/instance")
-	public Object getInstance(@RequestParam(name="instance_id") String instance_id){		
-		try {
-			return vultr_Service.getInstance(instance_id);							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/ipv4instance")
-	public Object ipv4InstanceList(@RequestParam(name="instance_id") String instance_id){		
-		try {
-			return vultr_Service.getIPv4InstanceInformationList(instance_id);							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/os")
-	public Object osList(){		
-		try {
-			return vultr_Service.getOsList();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/plans")
-	public Object plansList(){		
-		try {
-			return vultr_Service.getPlansList();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/regions")
-	public Object regionsList(){		
-		try {
-			return vultr_Service.getRegionsList();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/plansinregion")
-	public Object availablePlansInRegion(@RequestParam(name="region_id") String region_id){		
-		try {
-			return vultr_Service.getAvailablePlansInRegionList(region_id);							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
-	
-	@GetMapping("/vultr/snapshots")
-	public Object snapshotsList(){		
-		try {
-			return vultr_Service.getSnapshotsList();							
-		}catch(Exception e) {
-            return ResponseHandler.ResponseMulti(e.getMessage(), HttpStatus.MULTI_STATUS, null);
-        }
-	}
- 	*/	
-	
+
 	@PostMapping("/create")
 	public ResponseEntity<Object> addCloud_Providers(@Validated @RequestBody Providers cloud_Providers,Errors errors){	
 		if(ex != null) {

@@ -1,9 +1,9 @@
-package com.gcs.cmp.providers.Vultr;
+package com.gcs.cmp.providers.VultrV0;
 
 import java.sql.SQLException;
 
 
-public interface Vultr_Service {
+public interface Vultr_ServiceV0 {
 
 	public Object getAccountInfo() throws SQLException;
 	public Object getApplicationList() throws SQLException;

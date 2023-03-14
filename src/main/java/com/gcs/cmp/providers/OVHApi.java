@@ -2,32 +2,18 @@ package com.gcs.cmp.providers;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Properties;
 
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 
 import com.gcs.cmp.Exception.CustomException;
 import com.gcs.cmp.Exception.ResponseHandler;
 
-/**
- * Simple low level wrapper over the OVH REST API.
- * 
- * 
- * @author mbsk
- *
- */
 public class OVHApi {
 	
 	private String appKey = "";
@@ -38,9 +24,9 @@ public class OVHApi {
 	public OVHApi() throws Exception {
 		super();
 		
-			appKey = "600da4cf6fec5b7f";
-			appSecret = "cd5b8d1df08b8c794dff00305c0e9fbe";
-			consumerKey = "4a4506f468fbe20a01264a176d9a728e";
+		 appKey = "b08cd5d42c4c12a1";
+		 appSecret = "fcb44eeab2765824cbaa2aa2f0a1cf58";
+		 consumerKey = "0f277a9a17bdad4172df1198f427542a";
 	}
 	
 	public OVHApi(String appKey, String appSecret, String consumerKey) {		
@@ -49,7 +35,7 @@ public class OVHApi {
 		this.consumerKey = consumerKey;
 	}
 	
-	private void assertAllConfigNotNull() throws  Exception{
+	private void assertAllConfigNotNull() throws Exception{
 		if(appKey==null || appSecret==null || consumerKey==null) {
 			throw new CustomException("Something went wrong.");
 		}
@@ -99,11 +85,11 @@ public class OVHApi {
 			request.setConnectTimeout(30000);
 			request.setRequestProperty("Content-Type", "application/json");
 			request.setRequestProperty("X-Ovh-Application", appKey);
+			
 			// handle authentification
 			if(needAuth) {
 				// get timestamp from local system
 				long timestamp = System.currentTimeMillis() / 1000;
-
 				// build signature
 				String toSign = new StringBuilder(appSecret)
 									.append("+")
@@ -118,7 +104,6 @@ public class OVHApi {
 									.append(timestamp)
 									.toString();
 				String signature = new StringBuilder("$1$").append(HashSHA1(toSign)).toString();
-				
 				// set HTTP headers for authentication
 				request.setRequestProperty("X-Ovh-Consumer", consumerKey);
 				request.setRequestProperty("X-Ovh-Signature", signature);
@@ -133,8 +118,7 @@ public class OVHApi {
                 out.flush();
                 out.close();
             }
-			
-			
+					
 			String inputLine;
 			BufferedReader in;
 			int responseCode = request.getResponseCode();
@@ -152,7 +136,7 @@ public class OVHApi {
 			in.close();
 			
 			if(responseCode == 200) {
-				return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, response.toString());
+				return response.toString();
 			} else if(responseCode == 400) {
 				return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
 			} else if (responseCode == 403) {

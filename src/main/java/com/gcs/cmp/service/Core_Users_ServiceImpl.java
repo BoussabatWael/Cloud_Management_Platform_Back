@@ -134,8 +134,8 @@ public class Core_Users_ServiceImpl implements Core_Users_Service{
 		String
 		filenameModif=tab[0]+"_"+System.currentTimeMillis()+"."+tab[1];
 		File f=new
-		//File(System.getProperty("user.home")+"/OneDrive/Bureau/Argus/serverMonitoring/src/assets/images/uploads/"+filenameModif);
-		File("/home/waelitwi/public_html/cloud_manager/assets/images/uploads/"+filenameModif);
+		File(System.getProperty("user.home")+"/OneDrive/Bureau/Argus/serverMonitoring/src/assets/images/uploads/"+filenameModif);
+		//File("/home/waelitwi/public_html/cloud_manager/assets/images/uploads/"+filenameModif);
 		FileOutputStream fos=new FileOutputStream(f);
 		fos.write(file.getBytes());
 		fos.close();

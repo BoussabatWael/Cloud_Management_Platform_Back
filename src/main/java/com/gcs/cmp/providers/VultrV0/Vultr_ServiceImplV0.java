@@ -1,4 +1,4 @@
-package com.gcs.cmp.providers.Vultr;
+package com.gcs.cmp.providers.VultrV0;
 
 import java.sql.SQLException;
 import java.time.LocalDateTime;
@@ -30,48 +30,18 @@ import com.google.gson.Gson;
 
 
 @Service
-public class Vultr_ServiceImpl  implements Vultr_Service{
+public class Vultr_ServiceImplV0 implements Vultr_ServiceV0{
 
 	RestTemplate restTemplate  = new RestTemplate();
 	
 	@Override
 	public Object getAccountInfo() throws SQLException {
-		/*
-    	String url = "https://api.vultr.com/v2/account";   	
-    	if (BasicAuthInterceptor.authHeader != null && BasicAuthInterceptor.authHeader !="undefined" && BasicAuthInterceptor.authHeader.toLowerCase().startsWith("bearer")) {
-	    	HttpHeaders header = new HttpHeaders();
-	    	header.add("Authorization", BasicAuthInterceptor.authHeader);
-	        header.setContentType(MediaType.APPLICATION_JSON);
-	    	HttpEntity<Object> entity = new HttpEntity<>(header);
-			try {			    
-				ResponseEntity<Object> result = this.restTemplate.exchange(url,HttpMethod.GET,entity,Object.class);
-				Object res = result.getBody();	
-					if(res != null) {
-						Gson gson = new Gson();					
-						String js = gson.toJson(res);
-						if(js.contains("account")) {
-							JSONObject jsonObj = new JSONObject(js);											
-							String name = jsonObj.getJSONObject("account").getString("name");						
-							Object account = account_formatter(name);									
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, account);
-						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
-						}
-					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
-					}	
-			}catch(Exception e) {
-				return ResponseHandler.ResponseOk(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-			}
-    	}else {
-			return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
-    	}
-    	*/
 		
+    	String url = "https://api.vultr.com/v2/account";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/account";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -102,7 +72,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/account";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -136,48 +105,13 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 	}
 
 	@Override
-	public Object getApplicationList() throws SQLException {		
-		/*
-    	String url = "https://api.vultr.com/v2/applications";
-    	if (BasicAuthInterceptor.authHeader != null && BasicAuthInterceptor.authHeader != "undefined" && BasicAuthInterceptor.authHeader.toLowerCase().startsWith("bearer")) {
-	    	HttpHeaders header = new HttpHeaders();
-	    	header.add("Authorization", BasicAuthInterceptor.authHeader);
-	        header.setContentType(MediaType.APPLICATION_JSON);
-	    	HttpEntity<Object> entity = new HttpEntity<>(header);
-			try {						    
-				ResponseEntity<Object> result = this.restTemplate.exchange(url,HttpMethod.GET,entity,Object.class);
-				Object res = result.getBody();				
-					if(res != null) {
-						Gson gson = new Gson();	
-						String js = gson.toJson(res);
-						if(js.contains("applications")) {
-							JSONObject jsonObj = new JSONObject(js);								
-							JSONArray apps = jsonObj.getJSONArray("applications");				
-							ArrayList<Object> applsList = new ArrayList<>();
-							for(int i=0;i<apps.length();i++) {
-								JSONObject app_provider = (JSONObject) apps.get(i);
-								Object app = application_formatter(app_provider.getInt("id"), app_provider.get("name").toString(), app_provider.get("image_id").toString());
-								applsList.add(app);
-							}				
-							return ResponseHandler.ResponseListOk("Successfully retrieved data.", applsList.size(), HttpStatus.OK, applsList.toArray());
-						}else {
-							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
-						}	
-					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
-					}		
-			}catch(Exception e) {
-				return ResponseHandler.ResponseOk(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-			}
-    	}else {
-			return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
-    	}			
-		*/
+	public Object getApplicationList() throws SQLException {
 		
+    	String url = "https://api.vultr.com/v2/applications";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/applications";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -202,10 +136,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -213,7 +147,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/applications";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -238,10 +171,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -253,10 +186,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getBackupsList() throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/backups";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/backups";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -281,10 +216,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -292,7 +227,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/backups";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -317,10 +251,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -332,10 +266,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getBillingHistoryList() throws SQLException {	
+		
+    	String url = "https://api.vultr.com/v2/billing/history";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/billing/history";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -354,10 +290,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -365,7 +301,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/billing/history";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -384,10 +319,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -399,10 +334,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getInvoicesList() throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/billing/invoices";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/billing/invoices";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -421,10 +358,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -432,7 +369,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/billing/invoices";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -451,10 +387,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -466,10 +402,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getDnsDomainsList() throws SQLException {	
+		
+    	String url = "https://api.vultr.com/v2/domains";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -494,10 +432,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -505,7 +443,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -530,10 +467,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -545,10 +482,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getSoaInformations(String dns_domain) throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/soa";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/soa";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);		    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -562,15 +501,15 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 						if(js.contains("dns_soa")) {
 							JSONObject jsonObj = new JSONObject(js);
 							Map<String, Object> soa = jsonObj.getJSONObject("dns_soa").toMap();									
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, soa);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", soa.size(), HttpStatus.OK, soa);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -578,7 +517,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/soa";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -592,15 +530,15 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 						if(js.contains("dns_soa")) {
 							JSONObject jsonObj = new JSONObject(js);
 							Map<String, Object> soa = jsonObj.getJSONObject("dns_soa").toMap();									
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, soa);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", soa.size(), HttpStatus.OK, soa);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -612,10 +550,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getDnsSecInfo(String dns_domain) throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/dnssec";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/dnssec";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -634,10 +574,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListKo("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -645,7 +585,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/dnssec";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -664,10 +603,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListKo("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -679,10 +618,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getRecordsList(String dns_domain) throws SQLException {	
+		
+    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/records";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/records";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -701,10 +642,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -712,7 +653,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/domains/"+dns_domain+"/records";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -731,10 +671,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -746,10 +686,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getFirewallGroupsList() throws SQLException {	
+		
+    	String url = "https://api.vultr.com/v2/firewalls";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/firewalls";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -768,10 +710,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -779,7 +721,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/firewalls";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -798,10 +739,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -812,11 +753,13 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 	}
 
 	@Override
-	public Object getFirewallRulesList(String firewall_group_id) throws SQLException {	
+	public Object getFirewallRulesList(String firewall_group_id) throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/firewalls/"+firewall_group_id+"/rules";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/firewalls/"+firewall_group_id+"/rules";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -835,10 +778,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -846,7 +789,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/firewalls/"+firewall_group_id+"/rules";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -865,10 +807,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -880,10 +822,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getInstancesList() throws SQLException {	
+		
+    	String url = "https://api.vultr.com/v2/instances";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -908,10 +852,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -919,7 +863,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -944,10 +887,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -959,10 +902,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getInstance(String instance_id) throws SQLException {	
+		
+    	String url = "https://api.vultr.com/v2/instances/"+instance_id;
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -976,15 +921,15 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 						if(js.contains("instance")) {
 							JSONObject jsonObj = new JSONObject(js);							
 							Map<String, Object> instance = jsonObj.getJSONObject("instance").toMap();								
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, instance);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", instance.size(), HttpStatus.OK, instance);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -992,7 +937,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id;
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1006,15 +950,15 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 						if(js.contains("instance")) {
 							JSONObject jsonObj = new JSONObject(js);							
 							Map<String, Object> instance = jsonObj.getJSONObject("instance").toMap();								
-							return ResponseHandler.ResponseOk("Successfully retrieved data.", HttpStatus.OK, instance);
+							return ResponseHandler.ResponseListOk("Successfully retrieved data.", instance.size(), HttpStatus.OK, instance);
 						}else {
-							return ResponseHandler.ResponseOk("Empty result.", HttpStatus.OK, null);
+							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, null);
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1026,10 +970,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getIPv4InstanceInformationList(String instance_id) throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv4";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv4";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1048,10 +994,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1059,7 +1005,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv4";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1078,10 +1023,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1093,10 +1038,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getIPv6InstanceInformation(String instance_id) throws SQLException {	
+		
+    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv6";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv6";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1115,10 +1062,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1126,7 +1073,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv6";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1145,10 +1091,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1160,10 +1106,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getIPv6InstanceReverseList(String instance_id) throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv6/reverse";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv6/reverse";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1182,10 +1130,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1193,7 +1141,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/instances/"+instance_id+"/ipv6/reverse";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1212,10 +1159,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1227,10 +1174,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getOsList() throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/os";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/os";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1249,10 +1198,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1260,7 +1209,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/os";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1279,10 +1227,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1294,10 +1242,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getPlansList() throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/plans";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/plans";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1316,10 +1266,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1327,7 +1277,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/plans";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1346,10 +1295,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1361,10 +1310,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getRegionsList() throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/regions";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/regions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1383,10 +1334,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1394,7 +1345,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/regions";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1413,10 +1363,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1428,10 +1378,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getAvailablePlansInRegionList(String region_id) throws SQLException {
+		
+    	String url = "https://api.vultr.com/v2/regions/"+region_id+"/availability";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/regions/"+region_id+"/availability";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1450,10 +1402,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}				
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1461,7 +1413,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/regions/"+region_id+"/availability";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1480,10 +1431,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}	
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}	
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1495,10 +1446,12 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 
 	@Override
 	public Object getSnapshotsList() throws SQLException {		
+		
+    	String url = "https://api.vultr.com/v2/snapshots";
+
 		if(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_USER_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/snapshots";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);	    	
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1517,10 +1470,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}					
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
@@ -1528,7 +1481,6 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 		}else if(BasicAuthInterceptor.GLOBAL_ACCOUNT != null) {
 			String key = Provider.getProviderKey(BasicAuthInterceptor.GLOBAL_ACCOUNT);
 		    if(!key.equals("")) {
-		    	String url = "https://api.vultr.com/v2/snapshots";
 		    	HttpHeaders header = new HttpHeaders();
 		    	header.add("Authorization", "Bearer "+key);
 		        header.setContentType(MediaType.APPLICATION_JSON);
@@ -1547,10 +1499,10 @@ public class Vultr_ServiceImpl  implements Vultr_Service{
 							return ResponseHandler.ResponseListOk("Empty result.", 0, HttpStatus.OK, new ArrayList<>());
 						}
 					}else {
-						return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+						return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 					}
 				}catch(Exception e) {
-					return ResponseHandler.ResponseOk("Something went wrong.", HttpStatus.BAD_REQUEST, null);
+					return ResponseHandler.ResponseListOk("Something went wrong.", 0, HttpStatus.BAD_REQUEST, null);
 				}
 		    }else {
 				return ResponseHandler.ResponseOk("Unable to authenticate you.", HttpStatus.UNAUTHORIZED, null);
