@@ -24,9 +24,9 @@ public class OVHApi {
 	public OVHApi() throws Exception {
 		super();
 		
-		 appKey = "b08cd5d42c4c12a1";
-		 appSecret = "fcb44eeab2765824cbaa2aa2f0a1cf58";
-		 consumerKey = "0f277a9a17bdad4172df1198f427542a";
+		 appKey = "000000000000";
+		 appSecret = "00000000000000000000000";
+		 consumerKey = "0000000000000000000000000";
 	}
 	
 	public OVHApi(String appKey, String appSecret, String consumerKey) {		
