@@ -18,9 +18,9 @@ public class OVH_ServiceImplV0 implements OVH_ServiceV0{
 
 	RestTemplate restTemplate = new RestTemplate();
 
-	 String	appKey = "b08cd5d42c4c12a1";
-	 String	appSecret = "fcb44eeab2765824cbaa2aa2f0a1cf58";
-	 String	consumerKey = "0f277a9a17bdad4172df1198f427542a";
+	 String	appKey = "0000000000";
+	 String	appSecret = "888888888888888888";
+	 String	consumerKey = "aaaaaaaaaaaaaaaaaaaaaaaa";
 	 
 	@Override
 	public Object getDomainsList() throws SQLException {		
